@@ -1,5 +1,5 @@
 var codeURL="https://raw.githubusercontent.com/captainjtx/freecoder/master/SortingAlgorithms/";
-var imgURL="https://raw.githubusercontent.com/captainjtx/blog/master/image/";
+var imgURL="https://raw.githubusercontent.com/captainjtx/mysite/master/blog/static/blog/image/";
 //var codeURL="/lib/freecoder/SortingAlgorithms/";
 //var imgURL="/image/";
 $(function(){
