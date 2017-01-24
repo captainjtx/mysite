@@ -1,0 +1,107 @@
+{% extends "blog/article.html" %}
+{% load static %}
+{% block content %}
+<h2 class="blog-post-title">Basic Data Structure</h2>
+<p class="blog-post-meta">Nov 29, 2016 by <a href="#">TJ</a></p>
+<h2 id="section-introduction">Introduction</h2>
+<p>I will talk about basic data structures and provide ready-to-use implementations. Generally, this article sets another milestone for my ongoing journey on the <a href="https://mitpress.mit.edu/books/introduction-algorithms">'introduction to algorithms'</a> book. All codes I wrote here are <a href="https://github.com/captainjtx/freecoder/tree/master/DataStructure" target="_blank">freely available</a>.</p>
+<hr>
+<h2 id="section-stack">Stack</h2>
+<p>Stacks are dynamic sets that implement a <strong>last-in, first-out (LIFO)</strong> policy. Imagine a spring loaded dish stack accessible only from the top. It always <strong>pops</strong> out the top plate which is <strong>pushed</strong> in last time. After each push/pop, the 'spring' will automatically adjust the <strong>top</strong> plate in the stack.</p>
+<br>
+<figure>
+	<p><img id="img-stack" class="center"></p>
+	<figcaption>
+	<strong>Fig 1. </strong> (a) Inserting (<strong>push</strong>) data to and removing (<strong>pop</strong>) data from a <strong>stack</strong> is analogous to the dish loading and retrieving from a spring loaded dish stack. (b) Array implementation of stack. Pushing 7 into the stack increases the <strong>head</strong> index. Pop operation decreases it back and outputs the previously inserted 7 (LIFO). 
+	</figcaption> 
+</figure>
+<br>
+<h3>stack.cpp</h3>
+<div class="code-block" id="user-src-1"></div>
+<div class="output-block" id="output-1"></div>
+<p>All operations, push/pop and top, of stack take $O(1)$ time.</p>
+<p class="note">To include c++11 using g++ compiler: g++ -std=c++11 stack.cpp </p>
+<hr>
+<h2 id="section-queue">Queue</h2>
+<p>Queue implements a <strong>first-in, first-out (FIFO)</strong> policy analogous to a customer line waiting to pay out in the supermakert. Both the <strong>head</strong> and the <strong>tail</strong> of a queue are adjustable. For insert operation (<strong>enqueue</strong>), the data was put behind the tail. For delete (<strong>dequeue</strong>), data was removed from the head position. As a result, the first inserted data always got retrieved earlier than others (FIFO).</p>
+<br>
+<figure>
+	<p><img id="img-queue" class="center"></p>
+	<figcaption>
+	<strong>Fig 2. </strong> (a) Inserting (<strong>enqueue</strong>) data to and removing (<strong>dequeue</strong>) data from a <strong>queue</strong>. (b) Array implementation of queue. Enqueuing data into the queue increases the <strong>tail</strong> index while dequeue operation increases the <strong>head</strong> index. The data got retrieved is always the one that sits in the queue for the longest time (FIFO). 
+	</figcaption> 
+</figure>
+<br>
+<h3>queue.cpp</h3>
+<div class="code-block" id="user-src-2"></div>
+<div class="output-block" id="output-2"></div>
+<p>Similar to <a class="inline-link" href="#section-stack">stack</a>, all operations, enqueue/dequeue and top on queue take $O(1)$ time.</p>
+<hr>
+<h2 id="section-list">List</h2>
+<p>List or more precisely, doubly linked list, is a more flexible data structure which can be accessed from any position. Previous <a class="inline-link" href="#section-stack">stack</a> and <a class="inline-link" href="#section-queue">queue</a> implement preallocated array while list implements dynamic allocated nodes and pointers to link them together. Each node in the list contains pointers that point to the previous and the next node.</p>
+<br>
+<figure>
+	<p><img id="img-list" class="center"></p>
+	<figcaption>
+	<strong>Fig 3. </strong> (a) An example of doubly linked list. (b)A circular, doubly linked list with a <strong>sentinel</strong> (nil). Black arrow points to the next node, blue arrow points to the previous node. 
+	</figcaption> 
+</figure>
+<br>
+<h3>list.cpp</h3>
+<div class="code-block" id="user-src-3"></div>
+<div class="output-block" id="output-3"></div>
+<p>Inserting/removing from either end of list take $O(1)$ time. It is also worthwhile to note that in the sample code above, the previous pointer is implemented by <code>std::weak_ptr</code> to resolve cyclic reference problem of <code>std::shared_ptr</code>.</p>
+<hr>
+<h2 id="section-list-sentinel">List with sentinel</h2>
+<p>An additional node (<strong>sentinel</strong>) can be inserted between the head and tail of doubly linked list to form a circular linked list (<strong>Fig 3. (b)</strong>). Sentinel can eliminate the boundary condition check in push and pop operations at the cost of additional space. The additional space cost might not be negligible in the case of large number of short lists. The constant factor speed improvement by sentinel is most obvious in inserting/removing from the middle of the list which is not implemented in the sample code.</p>
+<br>
+<h3>list-sentinel.cpp</h3>
+<div class="code-block" id="user-src-4"></div>
+<div class="output-block" id="output-4"></div>
+<br>
+<p>The testing code is similar to the <code>list.cpp</code> in normal doubly linked list.</p>
+{% endblock %}
+
+{% block sidebar %}
+<ul class="nav nav-stacked" data-spy="affix" data-offset-top="175" id="nav-sidebar">
+	<p>In this article</p>
+	<li><a href="#section-introduction">Introduction</a></li>
+	<li>
+		<a href="#section-stack">Stack</a>
+		<ul class="nav nav-stacked">
+			<li><a href="#user-src-1">stack.cpp</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#section-queue">Queue</a>
+		<ul class="nav nav-stacked">
+			<li><a href="#user-src-2">queue.cpp</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#section-list">List</a>
+		<ul class="nav nav-stacked">
+			<li><a href="#user-src-3">list.cpp</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="#section-list-sentinel">List with sentinel</a>
+		<ul class="nav nav-stacked">
+			<li><a href="#user-src-4">list-sentinel.cpp</a></li>
+		</ul>
+	</li>
+	<a class="btn btn-default" id="btn-github-star" href="https://github.com/captainjtx/codingground" target="_blank">
+		<svg height="16" width="16">
+			<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+		</svg>
+		<div>Star</div>
+		<a class="btn btn-default" id="btn-star-count">
+			<div>0</div>
+		</a>
+	</a>
+</ul>
+{% endblock %}
+
+{% block customjs %}
+<script src="{% static "blog/js/data-structure.js" %}"></script>
+{% endblock %}
