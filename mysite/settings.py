@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 import os
+import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +21,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3f+t9-s0g0@=-76tj^a3m*x6jm0&=-9ll)%35#ak%wh2s#bmb3'
+with open('/Users/tengi/conf/secret_key.txt') as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if socket.gethostname()=='tengi.nfshost.com':
+    DEBUG=False;
+else:
+    DEBUG=True
+#DEBUG = os.environ.get("DEBUG",False) 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost']
 
 
 # Application definition

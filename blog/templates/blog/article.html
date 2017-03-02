@@ -86,13 +86,13 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 						<li>
 							<a href="#">Sorting Algorithms</a>
 							<ul class="nav nav-stacked">
-								<li><a href="/topics/sort">Basic Sorting Algorithms</a></li>
+								<li><a href="sort">Basic Sorting Algorithms</a></li>
 							</ul>
 						</li>
 						<li>
 							<a href="#">Data Structure</a>
 							<ul class="nav nav-stacked">
-								<li><a href="/topics/data-structure">Basic Data Structure</a></li>
+								<li><a href="data-structure">Basic Data Structure</a></li>
 							</ul>
 						</li>
 						<li><a href="#">Socket</a></li>
@@ -121,34 +121,44 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 							<li><a href="heapsort.php">Next</a></li>
 						</ul>
 					</nav>
+					<div id='comment-counter'>
+						{{commentNum}} Comment{{commentNum|pluralize}}
+					</div>
+					<div id='comment-list'>
+					</div>
+					<div class="horizontal-line"><hr></div>
+					{% verbatim %}
+					<h3>Your comment :</h3> 
 					<div id='comment-box' ng-app='commentBox' class='container-fluid'>
 						<div class="row">
 							<form ng-controller="FrmController" name="commentForm">
 								<div class="col-md-6">
 									<span>*Name:</span>
 									<input type="text" name="name" placeholder="Your Name" ng-model="txtName" required>
-									<img ng-show="!commentForm.name.$error.required" src="{% static "image/correct.svg" %}" class="indicator-icon" title="Correct">
+									<img ng-show="!commentForm.name.$error.required" src="/static/image/correct.svg" class="indicator-icon" title="Correct">
 								</div>
 								<div class="col-md-6">
 									<span>*Email:</span>
 									<input type="email" name="email" placeholder="Your Email Address" ng-model="txtEmail" required>
-									<img ng-if="commentForm.email.$valid" src="{% static "image/correct.svg" %}" class="indicator-icon" title="Correct">
-									<img ng-if="commentForm.email.$invalid && !commentForm.email.$pristine"  src="{% static "image/incorrect.svg" %}" class="indicator-icon" title="Invalid">
+									<img ng-if="commentForm.email.$valid" src="/static/image/correct.svg" class="indicator-icon" title="Correct">
+									<img ng-if="commentForm.email.$invalid && !commentForm.email.$pristine"  src="/static/image/incorrect.svg" class="indicator-icon" title="Invalid">
 								</div>
 								<div class="col-xs-12">
 									<span>*Comment:</span>
-									<img ng-show="!commentForm.comment.$error.required" src="{% static "image/correct.svg" %}" class="indicator-icon" title="Correct">
+									<img ng-show="!commentForm.comment.$error.required" src="/static/image/correct.svg" class="indicator-icon" title="Correct">
 									<textarea ng-model="txtComment" placeholder="Your Comment" name="comment" required></textarea>
 									<button ng-click='btn_add();' class="btn btn-info">Submit</button>
 								</div>
 
-								<h4>Comments</h4>
 								<ul>
-									<li ng-repeat="comnt in comment"> {{ comnt }} <a  style="float: right;" href="" ng-click="remItem($index)">x</a></li>
+									<li ng-repeat="comnt in comment">{{comnt}}<a  style="float: right;" href="" ng-click="remItem($index)">x</a></li>
 								</ul>
 							</form> 
 						</div>
+						<br>
+						<p>Your email is going to be used for notifications and won't be disclosed for any other purposes.</p>
 					</div>
+					{% endverbatim %}
 					<footer class="blog-footer">
 						<p>
 						Copyright &copy 2016 Tianxiao Jiang
@@ -166,8 +176,8 @@ MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 		<!-- Bootstrap core JavaScript
 	  ================================================== -->
 	  <!-- Placed at the end of the document so the pages load faster -->
-	  <script src="//cdn.bootcss.com/angular.js/2.0.0-beta.17/angular2-all-testing.umd.dev.js"></script>
-	  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+	  <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	  <script src="{% static "blog/js/coliru.js" %}"></script>
 	  <script src="https://cdn.jsdelivr.net/ace/1.2.6/min/ace.js" integrity="sha256-xrr4HH5eSY+cFz4SH7ja/LaAi9qcEdjMpeMP49/iOLs=" crossorigin="anonymous"></script>

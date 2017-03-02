@@ -462,3 +462,22 @@ p.note{
 	float: right;
 	font-size: 0.6em;
 }
+#comment-counter
+{
+	margin-top: 10px;
+	font-size: 1.2em;
+}
+.comment-content{
+	font-size: 0.9em;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-top: 1px solid #e5e5e5;
+	clear: right;
+}
+.comment-reader{
+	float: right;
+	font-size: 0.6em;
+}
+.horizontal-line{
+	clear: both;
+}

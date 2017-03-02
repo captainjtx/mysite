@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    url(r'^sort$', views.sort, name='sort'),
-    url(r'^data-structure$', views.dataStructure, name='data-structure'),
+        url(r'^(?P<filename>[^/]+)/$', views.article, name='article'),
+        url(r'^comment/get/([^/]+)/$', views.getComment, name='get comment'),
+        url(r'^comment/add$',views.addComment),
 ]
 
