@@ -21,12 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open('/Users/tengi/conf/secret_key.txt') as f:
-    SECRET_KEY = f.read().strip()
+if socket.gethostname()=='tengi.nfshost.com':
+    with open('/home/conf/secret_key.txt') as f:
+        SECRET_KEY = f.read().strip()
+else:
+    SECRET_KEY='0g0@=-76tj^a3m*6jm0=-9l)35#k%w2s#bmb3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if socket.gethostname()=='tengi.nfshost.com':
-    DEBUG=False;
+    DEBUG=False
 else:
     DEBUG=True
 #DEBUG = os.environ.get("DEBUG",False) 
