@@ -55,5 +55,15 @@ $(function(){
 
 		$('#comment-list').html(commentContent);
 	});
+	githubStars("captainjtx/mysite",function(stars){
+		$('#btn-star-count div').html(stars);
+	});
+	$("p.note").prepend("<strong>Note: </strong>");
 });
 
+$('body').scrollspy({ 
+		target: '.bs-docs-sidebar',
+		offset: 40
+	});
+var staticURL="https://dvbg2t7tkoa4y.cloudfront.net/blog/";
+//var codeURL="https://raw.githubusercontent.com/captainjtx/freecoder/master/DataStructures/";

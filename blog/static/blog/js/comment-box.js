@@ -8,6 +8,7 @@ app.controller('FrmController', [
 		'$http',
 		function($scope,$http) {
 			$scope.comment = [];
+			$scope.staticURL='https://s3-us-west-1.amazonaws.com/always-a-programmer/';
 			$scope.btn_add = function() {
 				if($scope.txtComment !=''){
 					//$scope.comment.push($scope.txtComment);

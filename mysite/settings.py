@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 import os
 import socket
+import csv
+from collections import defaultdict
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,14 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if socket.gethostname()=='tengi.nfshost.com':
+IS_PRODUCTION=socket.gethostname()=='tengi.nfshost.com'
+if IS_PRODUCTION:
     with open('/home/conf/secret_key.txt') as f:
         SECRET_KEY = f.read().strip()
 else:
     SECRET_KEY='0g0@=-76tj^a3m*6jm0=-9l)35#k%w2s#bmb3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if socket.gethostname()=='tengi.nfshost.com':
+if IS_PRODUCTION:
     DEBUG=False
 else:
     DEBUG=True
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -127,7 +131,46 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+
+AWS_STORAGE_BUCKET_NAME = 'always-a-programmer'
+AWS_CLOUDFRONT_DOMAIN = 'dvbg2t7tkoa4y.cloudfront.net'
+
+columns = defaultdict(list) # each value in each column is appended to a list
+
+if IS_PRODUCTION :
+    fname='/home/conf/credentials.csv'
+else:
+    fname='/Users/tengi/mysite/conf/credentials.csv'
+
+with open(fname) as f:
+    reader = csv.DictReader(f) # read rows into a dictionary format
+    for row in reader: # read a row as {column1: value1, column2: value2,...}
+        for (k,v) in row.items(): # go over each column name and value 
+            columns[k].append(v) # append the value into the appropriate list
+                                 # based on column name k
+AWS_ACCESS_KEY_ID = columns['Access key ID'][0]
+AWS_SECRET_ACCESS_KEY = columns['Secret access key'][0]
+# Tell django-storages that when coming up with the URL for an item in S3 storage, keep
+# it simple - just use this domain plus the path. (If this isn't set, things get complicated).
+# This controls how the `static` template tag from `staticfiles` gets expanded, if you're using it.
+# We also use it in the next setting.
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+# This is used by the `static` template tag from `static`, if you're using that. Or if anything else
+# refers directly to STATIC_URL. So it's safest to always set it.
+
+
+if IS_PRODUCTION or os.environ.get('PUSH_S3'):
+    #STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+    STATIC_URL="https://%s/" % AWS_CLOUDFRONT_DOMAIN
+    # Tell the staticfiles app to use S3Boto storage when writing the collected static files (when
+    # you run `collectstatic`).
+    STATICFILES_STORAGE = 'mysite.customStorages.StaticStorage'
+    #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+else:
+    STATIC_URL='/static/'
+
 STATICFILES_DIRS=[
         os.path.join(BASE_DIR,'common_static'),
         ]
@@ -135,5 +178,4 @@ STATIC_ROOT=os.path.join(BASE_DIR,'collected_static')
 STATICFILES_FINDERS = [  
 'django.contrib.staticfiles.finders.FileSystemFinder',     
 'django.contrib.staticfiles.finders.AppDirectoriesFinder',   
-'django.contrib.staticfiles.finders.DefaultStorageFinder', 
 ]   
