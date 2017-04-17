@@ -37,7 +37,7 @@ else:
     DEBUG=True
 #DEBUG = os.environ.get("DEBUG",False) 
 
-ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost']
+ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost','dvbg2t7tkoa4y.cloudfront.net']
 
 
 # Application definition

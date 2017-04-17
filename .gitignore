@@ -5,4 +5,5 @@ conf/
 code/Interview/
 collected_static
 xiuqingmarryme/
+*.pyc
 *.out
