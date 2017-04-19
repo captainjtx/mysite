@@ -35,7 +35,7 @@ else:
     DEBUG=True
 #DEBUG = os.environ.get("DEBUG",False) 
 
-ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost']
+ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost','https://always-a-programmer.herokuapp.com/']
 
 
 # Application definition
