@@ -25,13 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 IS_PRODUCTION=os.environ.get("IS_PRODUCTION",False)
-if IS_PRODUCTION:
-    print("Production!")
-    with open('/home/conf/secret_key.txt') as f:
-        SECRET_KEY = f.read().strip()
-else:
-    print("Development!!")
-    SECRET_KEY='0g0@=-76tj^a3m*6jm0=-9l)35#k%w2s#bmb3'
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if IS_PRODUCTION:
@@ -140,21 +135,10 @@ USE_TZ = True
 AWS_STORAGE_BUCKET_NAME = 'always-a-programmer'
 AWS_CLOUDFRONT_DOMAIN = 'dvbg2t7tkoa4y.cloudfront.net'
 
-columns = defaultdict(list) # each value in each column is appended to a list
 
-if IS_PRODUCTION :
-    fname='/home/conf/credentials.csv'
-else:
-    fname='/Users/tengi/mysite/conf/credentials.csv'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
-with open(fname) as f:
-    reader = csv.DictReader(f) # read rows into a dictionary format
-    for row in reader: # read a row as {column1: value1, column2: value2,...}
-        for (k,v) in row.items(): # go over each column name and value 
-            columns[k].append(v) # append the value into the appropriate list
-                                 # based on column name k
-AWS_ACCESS_KEY_ID = columns['Access key ID'][0]
-AWS_SECRET_ACCESS_KEY = columns['Secret access key'][0]
 # Tell django-storages that when coming up with the URL for an item in S3 storage, keep
 # it simple - just use this domain plus the path. (If this isn't set, things get complicated).
 # This controls how the `static` template tag from `staticfiles` gets expanded, if you're using it.
