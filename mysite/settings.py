@@ -14,6 +14,7 @@ import os
 import socket
 import csv
 from collections import defaultdict
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,11 +24,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-IS_PRODUCTION=socket.gethostname()=='tengi.nfshost.com'
+IS_PRODUCTION=os.environ.get("IS_PRODUCTION",False)
 if IS_PRODUCTION:
+    print("Production!")
     with open('/home/conf/secret_key.txt') as f:
         SECRET_KEY = f.read().strip()
 else:
+    print("Development!!")
     SECRET_KEY='0g0@=-76tj^a3m*6jm0=-9l)35#k%w2s#bmb3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -37,7 +40,7 @@ else:
     DEBUG=True
 #DEBUG = os.environ.get("DEBUG",False) 
 
-ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost','dvbg2t7tkoa4y.cloudfront.net']
+ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost']
 
 
 # Application definition
@@ -86,13 +89,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation

@@ -7,3 +7,8 @@ collected_static
 xiuqingmarryme/
 *.pyc
 *.out
+common_static/
+venv
+.env
+collected_static/
+
