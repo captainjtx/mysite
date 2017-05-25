@@ -1,189 +1,95 @@
+{% extends "blog/template.html" %}
 {% load static %}
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="{% static "image/yingyang.png" %}">
-
-		<title>Always-A-Programmer</title>
-
-		<!-- Bootstrap core CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<!-- Custom styles for this template -->
-		<link href="{% static "blog/css/blog.css" %}" rel="stylesheet">
-		<link href="{% static "blog/css/comment-box.css" %}" rel="stylesheet">
-
-		<link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
-		<link href="{% static "blog/css/prism.css" %}" rel="stylesheet">
-
-		<script type="text/x-mathjax-config">
-MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-		</script>
-		<script type="text/javascript" async
-	  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
-		</script>
-	</head>
-	<body>
-		<header>
-			<div class="container-fluid" id="logo">
-				<a href="/home">
-					<span id="logo-1">always-a-programmer</span><span id="logo-2">.com</span>
-				</a>
-				<a id="dao" class="hidden-xs" href="https://en.wikipedia.org/wiki/Taoism" target="_blank"><img src="{% static "image/dao.png" %}" alt="dao" ></a>
-			</div>
-
-			<nav class="navbar navbar-default">
-				<div class="container-fluid">
-					<!-- Brand and toggle get grouped for better mobile display -->
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-
-						<a class="navbar-brand" href="/home">
-							<img src="{% static "image/yingyang.png" %}" alt="taiji">
-						</a>
-					</div>
-
-					<!-- Collect the nav links, forms, and other content for toggling -->
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-						<ul class="nav navbar-nav">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Topics<span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="/topics/sort/" id="dropdown-sort">Sorting algorithms</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="/topics/sockets/" id="dropdown-sockets">Socket communication</a></li>
-									<li role="separator" class="divider"></li>
-									<li><a href="/topics/sort/" id="dropdown-sort">Parallel computing</a></li>
-								</ul>
-							</li>
-							<li><a href="#">Projects</a></li>
-							<li><a href="#">Site Map</a></li>
-							<li><a href="#">About</a></li>
-						</ul>
-						<form class="navbar-form navbar-right">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Search">
-							</div>
-							<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-						</form>
-					</div><!-- /.navbar-collapse -->
-				</div><!-- /.container-fluid -->
-			</nav>
-		</header>
-		<div class="container-fluid">
-			<div class="row">
-				<nav class="col-md-2 hidden-sm hidden-xs nav-catalog">
-					<ul class="nav nav-stacked" data-spy="affix" data-offset-top="175">
-						<li>
-							<a href="#">Sorting Algorithms</a>
-							<ul class="nav nav-stacked">
-								<li><a href="sort">Basic Sorting Algorithms</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="#">Data Structure</a>
-							<ul class="nav nav-stacked">
-								<li><a href="data-structure">Basic Data Structure</a></li>
-							</ul>
-						</li>
-						<li><a href="#">Socket</a></li>
-						<li><a href="#">Multithread</a></li>
-						<li>
-							<a href="#">Signal Processing</a>
-							<ul class="nav nav-stacked">
-								<li><a href="#">Fast Fourier Transform</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="#">Others</a>
-							<ul class="nav nav-stacked">
-								<li><a href="#">How float is represented in memory ?</a></li>
-							</ul>
-						</li>
+{% block mainbody %}
+<div class="container-fluid">
+	<div class="row">
+		<nav class="col-md-2 hidden-sm hidden-xs nav-catalog">
+			<ul class="nav nav-stacked" data-spy="affix" data-offset-top="175">
+				<li>
+					<a href="#">Sorting Algorithms</a>
+					<ul class="nav nav-stacked">
+						<li><a href="sort">Basic Sorting Algorithms</a></li>
 					</ul>
-				</nav>
-				<div class="col-md-8 blog-main">
-					<div class="blog-post">
-						{% block content %}{% endblock %}
-					</div><!-- /.blog-post -->
-					<nav>
-						<ul class="pager">
-							<li><a href="#">Previous</a></li>
-							<li><a href="heapsort.php">Next</a></li>
-						</ul>
-					</nav>
-					<div id='comment-counter'>
-						{{commentNum}} Comment{{commentNum|pluralize}}
-					</div>
-					<div id='comment-list'>
-					</div>
-					<div class="horizontal-line"><hr></div>
-					{% verbatim %}
-					<h3>Your comment :</h3> 
-					<div id='comment-box' ng-app='commentBox' class='container-fluid'>
-						<div class="row">
-							<form ng-controller="FrmController" name="commentForm">
-								<div class="col-md-6">
-									<span>*Name:</span>
-									<input type="text" name="name" placeholder="Your Name" ng-model="txtName" required>
-									<img ng-show="!commentForm.name.$error.required" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
-								</div>
-								<div class="col-md-6">
-									<span>*Email:</span>
-									<input type="email" name="email" placeholder="Your Email Address" ng-model="txtEmail" required>
-									<img ng-if="commentForm.email.$valid" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
-									<img ng-if="commentForm.email.$invalid && !commentForm.email.$pristine"  ng-src={{staticURL+"image/incorrect.svg"}} class="indicator-icon" title="Invalid">
-								</div>
-								<div class="col-xs-12">
-									<span>*Comment:</span>
-									<img ng-show="!commentForm.comment.$error.required" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
-									<textarea ng-model="txtComment" placeholder="Your Comment" name="comment" required></textarea>
-									<button ng-click='btn_add();' class="btn btn-info">Submit</button>
-								</div>
-
-								<ul>
-									<li ng-repeat="comnt in comment">{{comnt}}<a  style="float: right;" href="" ng-click="remItem($index)">x</a></li>
-								</ul>
-							</form> 
+				</li>
+				<li>
+					<a href="#">Data Structure</a>
+					<ul class="nav nav-stacked">
+						<li><a href="data-structure">Basic Data Structure</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Socket</a></li>
+				<li><a href="#">Multithread</a></li>
+				<li>
+					<a href="#">Signal Processing</a>
+					<ul class="nav nav-stacked">
+						<li><a href="#">Fast Fourier Transform</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">Others</a>
+					<ul class="nav nav-stacked">
+						<li><a href="#">How float is represented in memory ?</a></li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		<div class="col-md-8 blog-main">
+			<div class="blog-post">
+				{% block content %}{% endblock %}
+			</div><!-- /.blog-post -->
+			<nav>
+				<ul class="pager">
+					<li><a href="#">Previous</a></li>
+					<li><a href="heapsort.php">Next</a></li>
+				</ul>
+			</nav>
+			<div id='comment-counter'>
+				{{commentNum}} Comment{{commentNum|pluralize}}
+			</div>
+			<div id='comment-list'>
+			</div>
+			<div class="horizontal-line"><hr></div>
+			{% verbatim %}
+			<h3>Your comment :</h3> 
+			<div id='comment-box' ng-app='commentBox' class='container-fluid'>
+				<div class="row">
+					<form ng-controller="FrmController" name="commentForm">
+						<div class="col-md-6">
+							<span>*Name:</span>
+							<input type="text" name="name" placeholder="Your Name" ng-model="txtName" required>
+							<img ng-show="!commentForm.name.$error.required" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
 						</div>
-						<br>
-						<p>Your email is going to be used for notifications and won't be disclosed for any other purposes.</p>
-					</div>
-					{% endverbatim %}
-					<footer class="blog-footer">
-						<p>
-						Copyright &copy 2016 Tianxiao Jiang
-						</p>
-						<p>
-						<a href="mailto:jtxinnocence@gmail.com?Subject=www.always-a-programmer.com" target="_top" class="footer-btn">Email me</a>
-						</p>
-					</footer>
-				</div><!-- /.blog-main -->
-				<nav class="col-md-2 bs-docs-sidebar hidden-sm hidden-xs"> 
-					{% block sidebar %}{% endblock %}
-				</nav>
-			</div><!-- /.row -->
-		</div><!-- /.container -->
-		<!-- Bootstrap core JavaScript
-	  ================================================== -->
-	  <!-- Placed at the end of the document so the pages load faster -->
-	  <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
-	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	  <script src="{% static "blog/js/coliru.js" %}"></script>
-	  <script src="https://cdn.jsdelivr.net/ace/1.2.6/min/ace.js" integrity="sha256-xrr4HH5eSY+cFz4SH7ja/LaAi9qcEdjMpeMP49/iOLs=" crossorigin="anonymous"></script>
-	  <script src="{% static "blog/js/articles.js" %}"></script>
-	  <script src="{% static "js/github-stars/github-stars.js" %}"></script>
-	  <script src="{% static "blog/js/comment-box.js" %}"></script>
-	  {% block customjs %}{% endblock %}
-	</body>
-</html>
+						<div class="col-md-6">
+							<span>*Email:</span>
+							<input type="email" name="email" placeholder="Your Email Address" ng-model="txtEmail" required>
+							<img ng-if="commentForm.email.$valid" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
+							<img ng-if="commentForm.email.$invalid && !commentForm.email.$pristine"  ng-src={{staticURL+"image/incorrect.svg"}} class="indicator-icon" title="Invalid">
+						</div>
+						<div class="col-xs-12">
+							<span>*Comment:</span>
+							<img ng-show="!commentForm.comment.$error.required" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
+							<textarea ng-model="txtComment" placeholder="Your Comment" name="comment" required></textarea>
+							<button ng-click='btn_add();' class="btn btn-info">Submit</button>
+						</div>
+
+						<ul>
+							<li ng-repeat="comnt in comment">{{comnt}}<a  style="float: right;" href="" ng-click="remItem($index)">x</a></li>
+						</ul>
+					</form> 
+				</div>
+				<br>
+				<p>Your email is going to be used for notifications and won't be disclosed for any other purposes.</p>
+			</div>
+			{% endverbatim %}
+		</div><!-- /.blog-main -->
+		<nav class="col-md-2 bs-docs-sidebar hidden-sm hidden-xs"> 
+			{% block sidebar %}{% endblock %}
+		</nav>
+	</div><!-- /.row -->
+</div><!-- /.container -->
+{% endblock %}
+{% block customjs %}
+<script src="{% static "blog/js/articles.js" %}"></script>
+<script src="{% static "js/github-stars/github-stars.js" %}"></script>
+<script src="{% static "blog/js/comment-box.js" %}"></script>
+{% endblock %}

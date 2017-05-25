@@ -87,4 +87,9 @@ def article(request,filename):
     context={'commentNum':commentNum}
     return render(request,'blog/'+filename+'.html',context)
 
+def home(request):
+    return render(request,'blog/home.html')
+
+def about(request):
+    return render(request,'blog/home.html')
 # Create your views here.
