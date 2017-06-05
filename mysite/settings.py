@@ -25,8 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 IS_PRODUCTION=os.environ.get("IS_PRODUCTION",False)
-
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY",'0g0@=-76tj^a3m*6jm0=-9l)35#k%w2s#bmb3')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if IS_PRODUCTION:
@@ -84,13 +83,23 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-DATABASES['default'] = dj_database_url.config()
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
+DATABASES={
+        'default':{
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'alwaysaprogrammer',
+            'USER': 'tengi',
+            'PASSWORD': 'loinliness',
+            'HOST': 'localhost',
+            'PORT': '',
+            }
+        }
+#DATABASES['default'] = dj_database_url.config()
 #db_from_env = dj_database_url.config(conn_max_age=500)
 #DATABASES['default'].update(db_from_env)
 

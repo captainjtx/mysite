@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from blog.models import Comment ,Reader, Article
+from blog.models import Comment ,Visitor, Article
 import datetime 
 import json 
 from django.core.serializers.json import DjangoJSONEncoder
@@ -19,11 +19,11 @@ def getComment(request,title):
     comments=Comment.objects.filter(article=articleID)
     data=[]
     for ite in comments:
-        readerName=Reader.objects.get(pk=ite.reader_id).name
+        visitorName=Visitor.objects.get(pk=ite.visitor_id).name
         content=ite.content
         vote=ite.vote
         pub_date=ite.pub_date
-        data+=[{'reader': readerName, 'content': content, 'vote': vote, 'datetime': pub_date.isoformat()}]
+        data+=[{'visitor': visitorName, 'content': content, 'vote': vote, 'datetime': pub_date.isoformat()}]
 
     dict['comment']=data;
     dict['success']=1
@@ -53,17 +53,17 @@ def addComment(request):
             dict['comment']=comment
             dict['article']=article
 
-            if not Reader.objects.filter(email=email).exists():
-                newReader=Reader(name=name,email=email)
-                newReader.save()
+            if not Visitor.objects.filter(email=email).exists():
+                newVisitor=Visitor(name=name,email=email)
+                newVisitor.save()
             else:
                 info='Email already exists !'
 
             articleID=Article.objects.get(title=article)
-            readerID=Reader.objects.get(email=email)
+            visitorID=Visitor.objects.get(email=email)
 
             newComment=Comment(article=articleID,
-                               reader=readerID,
+                               visitor=visitorID,
                                content=comment,
                                vote=vote,
                                pub_date=pub_date)

@@ -20,9 +20,9 @@ class Tag(models.Model):
     class Meta:
         ordering=['name']
 
-class Reader(models.Model):
+class Visitor(models.Model):
+    email=models.EmailField(unique=True,verbose_name ='e-mail',primary_key=True)
     name=models.CharField(max_length=200)
-    email=models.EmailField(primary_key=True,blank=True,verbose_name ='e-mail')
     def __str__(self):
         return self.name
     class Meta:
@@ -30,12 +30,12 @@ class Reader(models.Model):
     
 class Comment(models.Model):
     article=models.ForeignKey(Article)
-    reader=models.ForeignKey(Reader)
+    visitor=models.ForeignKey(Visitor,null=True)
     content=models.TextField('Comment content')
     vote=models.PositiveSmallIntegerField(default=0,blank=True)
     pub_date=models.DateTimeField('Comment date',default=now())
     def __str__(self):
-        return self.reader.name+' on '+ '"'+self.article.title+'"'
+        return self.visitor.name+' on '+ '"'+self.article.title+'"'
     class Meta:
         ordering=['article']
 
