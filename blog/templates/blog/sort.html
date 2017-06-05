@@ -17,8 +17,8 @@ Sorting problem is the most fundamental problem in either algorithm study or rea
 <h3>C++ Code</h3>
 <div class="code-block" id="user-src-1"></div>
 <div class="output-block" id="output-1"></div>
-<p>The worst and average case of insertion sort time complexity is $O(n^2)$. As it is in-place sort, auxiliary space used is $O(1)$.</p>
-<p class="note"> In academic world, $O$ is asymptotic upper bound while $\Theta$ is asymptotic tight bound. In engineering world, $O$ is commonly used. So, as an engineer, I will stick to the big O convention here which is also the best (lowest) upper bound to the best of my knowledge.</p>
+<p>The worst and average case of insertion sort time complexity is $$O(n^2)$$. As it is in-place sort, auxiliary space used is $$O(1)$$.</p>
+<p class="note"> In academic world, $$O$$ is asymptotic upper bound while $$\Theta$$ is asymptotic tight bound. In engineering world, $$O$$ is commonly used. So, as an engineer, I will stick to the big O convention here which is also the best (lowest) upper bound to the best of my knowledge.</p>
 <hr>
 <h2 id="section-divide-conquer">Divide, Conquer and Combine</h2>
 <p>
@@ -35,7 +35,7 @@ Before jumping to recursive sorting algorithms like quicksort or mergesort. It i
 <p>Personally I feel <strong>divide, conquer and combine</strong> would be more precise to represent the paradigm. Depending on the implementations, either <strong>divide</strong> or <strong>combine</strong> can be reduced to a trivial case. <a href="#section-merge-sort" class="inline-link">Mergesort</a> implements <strong>combine</strong> with trivial <strong>divide</strong> (divide by half). <a href="#section-quick-sort" class="inline-link">Quicksort</a>, however, implements <strong>partition</strong> (divide) but does not need <strong>combine</strong>. </p>
 <hr>
 <h2 id="section-merge-sort">Merge Sort</h2>
-<p>Mergesort is a relatively straightforward implementation of <strong>divide-and-conquer</strong>. As <strong>divide</strong> always splits the array in half, the running time is always $O(n\log n)$ (best, worst average). </p>
+<p>Mergesort is a relatively straightforward implementation of <strong>divide-and-conquer</strong>. As <strong>divide</strong> always splits the array in half, the running time is always $$O(n\log n)$$ (best, worst average). </p>
 <blockquote>  
 	<ol>
 		<li><strong>Divide</strong>: Divide the n-element sequence to be sorted into two subsequences of n/2 elements each.
@@ -55,11 +55,11 @@ The <strong>combine</strong> step of mergesort can be easily achieved:
 <h3>C++ Code</h3>
 <div class="code-block" id="user-src-2"></div>
 <div class="output-block" id="output-2"></div>
-<p>Since <strong>divide</strong> split the array in half in all cases, the deepth of recursion will be $\log n$ and the running time of each recursion level is $O(n)$, the overall running time of mergesort is always $O(n\log n)$. The auxiliary space complexity is $O(n)$, quite lage compared to quicksort's $O(\log n)$.</p>
+<p>Since <strong>divide</strong> split the array in half in all cases, the deepth of recursion will be $$\log n$$ and the running time of each recursion level is $$O(n)$$, the overall running time of mergesort is always $$O(n\log n)$$. The auxiliary space complexity is $$O(n)$$, quite lage compared to quicksort's $$O(\log n)$$.</p>
 
 <hr>
 <h2 id="section-quick-sort">Quick Sort</h2>
-<p>Average running time of quicksort is $O(n\log n)$ and auxiliary space complexity is $O(\log n)$, which is very small. Despite its worst-case running time of $O(n^2)$, quicksort is usually the best choice for sorting. The <strong>divide-and-conquer</strong> process to sort A[p,...,r] is as follows:</p>
+<p>Average running time of quicksort is $$O(n\log n)$$ and auxiliary space complexity is $$O(\log n)$$, which is very small. Despite its worst-case running time of $$O(n^2)$$, quicksort is usually the best choice for sorting. The <strong>divide-and-conquer</strong> process to sort A[p,...,r] is as follows:</p>
 <blockquote>  
 	<ol>
 		<li><strong>Divide</strong>: Partition (rearrange) the array into two subarrays (possibly empty) A[p,...,q-1] and A[q+1,...,r] such that each element in A[p,...,q-1] is less or equal to A[q] while each element in A[q+1,...,r] is greater than A[q]. A[q] is known as <strong>pivot</strong> element.</li>
@@ -68,7 +68,7 @@ The <strong>combine</strong> step of mergesort can be easily achieved:
 			<a href="https://mitpress.mit.edu/books/introduction-algorithms" class="citation">----Introduction to Algorithms</a>
 	</ol>
 </blockquote>
-<p>The fundamental subroutine of quicksort is <strong>partition</strong> (divide). A good performance of quicksort requires a <strong>balanced</strong> partition at each recursion level. In practice, pivot value can be randomly selected to achieve an average running time of $O(n\log n)$. <p>
+<p>The fundamental subroutine of quicksort is <strong>partition</strong> (divide). A good performance of quicksort requires a <strong>balanced</strong> partition at each recursion level. In practice, pivot value can be randomly selected to achieve an average running time of $$O(n\log n)$$. <p>
 <figure>
 	<p><img id="img-partition" class="center"></p>
 	<figcaption>
@@ -81,14 +81,14 @@ The <strong>combine</strong> step of mergesort can be easily achieved:
 <div class="code-block" id="user-src-3"></div>
 <div class="output-block" id="output-3"></div>
 <ul>
-	<li><strong>Worst case: </strong> Without randomization, the original quicksort select the last element as pivot value in each recursion. Then the worst case happens when the array is already sorted. In particular, the partition will yield an extremly unbalanced split at each recursion level: the left subarray has n-1 elements while the right one is empty. Considering T(n) as the running time of quicksort on a array of size n, in this case, T(n)=T(n-1)+$O(n)$. It can be easily calculated that T(n)=$O(n^2)$. However, with pivot chosed randomly here, no particular input will yield the worst case. And the probability of chosing always the largest value in each recusion by chance is almost zero. </li>
-	<li><strong>Best case: </strong> The best partition is equally divide the array by two at each recusion, which yields a running time of $O(n\log n)$;</li>
-	<li><strong>Average case: </strong> The averaged running time on randomized quicksort is $O(n\log n)$.</li>
+	<li><strong>Worst case: </strong> Without randomization, the original quicksort select the last element as pivot value in each recursion. Then the worst case happens when the array is already sorted. In particular, the partition will yield an extremly unbalanced split at each recursion level: the left subarray has n-1 elements while the right one is empty. Considering T(n) as the running time of quicksort on a array of size n, in this case, T(n)=T(n-1)+$$O(n)$$. It can be easily calculated that T(n)=$$O(n^2)$$. However, with pivot chosed randomly here, no particular input will yield the worst case. And the probability of chosing always the largest value in each recusion by chance is almost zero. </li>
+	<li><strong>Best case: </strong> The best partition is equally divide the array by two at each recusion, which yields a running time of $$O(n\log n)$$;</li>
+	<li><strong>Average case: </strong> The averaged running time on randomized quicksort is $$O(n\log n)$$.</li>
 </ul>
 <hr>
 <h2 id="section-heap-sort">Heap Sort</h2>
 <p>
-Heapsort is based on the <strong>heap</strong> data structure. It an in-place sort ($O(1)$ space complexity) and runs in $O(n\log n)$ time. Heap data structure can be represented as a nearly complete binary tree. A <code>heap-size</code> varaible is used to keep track of the number of valid heap elements in the array. Before introducing heapsort, a few of heap operations and properties have to be highlighted. Given an element at index position i, the indices of its parent node, left-child and right-child, if exist, can be easily derived as:
+Heapsort is based on the <strong>heap</strong> data structure. It an in-place sort ($$O(1)$$ space complexity) and runs in $$O(n\log n)$$ time. Heap data structure can be represented as a nearly complete binary tree. A <code>heap-size</code> varaible is used to keep track of the number of valid heap elements in the array. Before introducing heapsort, a few of heap operations and properties have to be highlighted. Given an element at index position i, the indices of its parent node, left-child and right-child, if exist, can be easily derived as:
 <br>
 <ul>
 	<li><strong>Parent</strong>: floor(i/2). </li>
@@ -119,31 +119,31 @@ All leaf nodes are trivial max-heap. The first element needs to be adjusted is e
 <p>
 This float-down procedure at each step can be generalized and is called <strong>max-heapify</strong>. As the array is looped in a bottom-up manner, each max-heapify starts with a relatively 'good' situation: the left and right subtrees are already max-heaps. If the root element is smaller than one of its child, then switch the parent with the larger child, and check the original root element again with its new children. This process is iteratively executed until either the original root element is switched to the bottom level or the property of max-heap is satisfied, e.g. root element is larger its children.
 </p>
-<p>Running time of max-heapfipy on a subtree of height h is $O(h)$. The upper bound of <strong>build-max-heap</strong> on an array of size n is n (iteration times) muliply $\log n$ (maximum height of substree). However, as the number of subtree with hight h is <code>ceil(n/2^(h+1))</code>, the exact running time of <strong>build-max-heap</strong> is less than $(\frac{n}{2}+1)+(\frac{n}{4}+1)+...=n+\log n$, which is $O(n)$. </p>
+<p>Running time of max-heapfipy on a subtree of height h is $$O(h)$$. The upper bound of <strong>build-max-heap</strong> on an array of size n is n (iteration times) muliply $$\log n$$ (maximum height of substree). However, as the number of subtree with hight h is <code>ceil(n/2^(h+1))</code>, the exact running time of <strong>build-max-heap</strong> is less than $$(\frac{n}{2}+1)+(\frac{n}{4}+1)+...=n+\log n$$, which is $$O(n)$$. </p>
 <br>
 <h3 id="section-iterative-max-heapify">Step 2: Iterative Max-Heapify</h3>
 <p>After building the input into a max-heap, the largest element will be the root element. To find the second largest one, we can switch the root element to the tail. Since the tail is now 'sorted', we can truncate The binary tree by simply decreasing the <code>heap-size</code> by one. By running max-heapify on the new tree, the second largest element can be obtained at the top. The process is interated until <code>heap-size</code> decreased to 1.</p>
-<p>The time complexity of heapsort is n-1 times call of max-heapify ($O(h)$) plus the running time of build-max-heap ($O(n)$), which is upper bounded by $O(n\log n)$. The fundamental subroutine of heapsort is max-heapify, which is also an in-place operation. The space complexity of heapsort is, therefore, $O(1)$.</p>
+<p>The time complexity of heapsort is n-1 times call of max-heapify ($$O(h)$$) plus the running time of build-max-heap ($$O(n)$$), which is upper bounded by $$O(n\log n)$$. The fundamental subroutine of heapsort is max-heapify, which is also an in-place operation. The space complexity of heapsort is, therefore, $$O(1)$$.</p>
 <h3>C++ Code</h3>
 <div class="code-block" id="user-src-4"></div>
 <div class="output-block" id="output-4"></div>
-<p class="note">The example code of max-heapify here uses <a href="https://en.wikipedia.org/wiki/Tail_call" target="_blank">tail-recursion</a>. Generally it can be optimized automatically to its equivalent loop call, which consumes constant stack space. Hoever, even if it is not optimized, the stack space used would be $O(\log n)$, which in practice, is not bad at all.</p> 
+<p class="note">The example code of max-heapify here uses <a href="https://en.wikipedia.org/wiki/Tail_call" target="_blank">tail-recursion</a>. Generally it can be optimized automatically to its equivalent loop call, which consumes constant stack space. Hoever, even if it is not optimized, the stack space used would be $$O(\log n)$$, which in practice, is not bad at all.</p> 
 <hr>
 <h2 id="section-comparison-sort">Comparison Sort</h2>
 <p>We note that <a href="#section-merge-sort" class="inline-link">mergesort</a>, <a href="#section-quick-sort" class="inline-link">quicksort</a> and <a href="#section-heap-sort" class="inline-link">heapsort</a> have somehting in common: they determine the sorting order by only comparing between input elements. These types of sorting algorithms are therefore called <strong>comparison sorts</strong>.  
 <blockquote>
-	<p>Any comparison sort algorithm requires $\Omega(n\log n)$ comparisons in the worst case.</p>
+	<p>Any comparison sort algorithm requires $$\Omega(n\log n)$$ comparisons in the worst case.</p>
 	<a href="https://mitpress.mit.edu/books/introduction-algorithms" class="citation">----Introduction to Algorithms</a>
 </blockquote>
-<p>As the worst case running time of <a href="#section-merge-sort" class="inline-link">mergesort</a> and  <a href="#section-quick-sort" class="inline-link">quicksort</a> are $O(n\log n)$, both of them are <strong>asymptotically</strong> optimal comparison sorts. Although, <a href="#section-quick-sort" class="inline-link">quicksort</a> is not <strong>asymptotically</strong> optimal, a good implementation of it usually outperforms mergesort and heapsort in practice with a smaller constant k in the actual running time of $O(k~n\log n)$.</p>  
+<p>As the worst case running time of <a href="#section-merge-sort" class="inline-link">mergesort</a> and  <a href="#section-quick-sort" class="inline-link">quicksort</a> are $$O(n\log n)$$, both of them are <strong>asymptotically</strong> optimal comparison sorts. Although, <a href="#section-quick-sort" class="inline-link">quicksort</a> is not <strong>asymptotically</strong> optimal, a good implementation of it usually outperforms mergesort and heapsort in practice with a smaller constant k in the actual running time of $$O(k~n\log n)$$.</p>  
 <hr>
 <h2 id="section-counting-sort">Counting Sort</h2>
-<p><strong>Counting sort</strong> runs in $O(n)$, assuming the input elements are integers within an already known range. It breaks the limination of comparison sort by indexing the element directly at its own value.</p>
+<p><strong>Counting sort</strong> runs in $$O(n)$$, assuming the input elements are integers within an already known range. It breaks the limination of comparison sort by indexing the element directly at its own value.</p>
 <p>Imagining an input of <code>A=[3 1 5 4 6 2]</code>, each element is drawn from 1 to 6, the order of 4 is exactly 4 because each possible element before it (e.g. 1 2 3) appears and only appears once in A. By counting how many elements are smaller than an element, we can immediately obtain its correct position. To do this, an auxiliary array <code>B</code> of size <code>K</code> is needed, where K is the maximum value of the input. Initially B is set to zeros. Each time an element appears, for example A[i], B records its appearing times in the array by executing B[A[i]]=B[A[i]]+1. After that, B is transformed to its cumulative summation by executing B[j]=B[j]+B[j-1] at each step. The new B[j] represents the number of elements are larger or equal to <code>j</code> in the original array. We can now position the element A[i] by A.length-B[A[i]] and update B[A[i]] with B[A[i]]-1 iteratively from tail to head to make it stable.</p>
 <h3>C++ Code</h3>
 <div class="code-block" id="user-src-5"></div>
 <div class="output-block" id="output-5"></div>
-<p>Counting sort is a stable sort and runs extremly fast. However, it is only suitable for 'small' precision numbers. The intermediate array of B will be too expensive to open if K (maximum possible value) is much larger compared to n (array size). An extreme example can be A=[1 9999999]. In this case, although there are only two elements in the array, the size of B has to be at least 9999999. Generally, the space complexity of counting sort is $O(n+K)$.</p>
+<p>Counting sort is a stable sort and runs extremly fast. However, it is only suitable for 'small' precision numbers. The intermediate array of B will be too expensive to open if K (maximum possible value) is much larger compared to n (array size). An extreme example can be A=[1 9999999]. In this case, although there are only two elements in the array, the size of B has to be at least 9999999. Generally, the space complexity of counting sort is $$O(n+K)$$.</p>
 <p>The stable property of counting sort can be used by <a href="#section-radix-sort" class="inline-link">radix sort</a>. In addition, the performance of counting sort can be even raised higher by <strong>parallel</strong> counting, resulting a n-fold reduction in running time, where n is the number of threads.</p>
 <hr>
 <h2 id="section-radix-sort">Radix Sort</h2>
@@ -159,8 +159,8 @@ This float-down procedure at each step can be generalized and is called <strong>
 <p>In the above example, 53 is placed before 57 after sorting on the first digit. This relative order is maintained after the stable sort on the second digit (most significant digit). In other cases, the relative order is always refreshed and depends only on the higher digit.</p>
 <p>However, numbers in computer is always in binary. It is actually not optimal to sort bit by bit. In practice, grouping several bits into one bin can boost the overall performance. The <a href="https://mitpress.mit.edu/books/introduction-algorithms">book</a> gives an asymptotic criteria to choose bin size <code>r</code> depending on the total bit number <code>b</code> and the number of elements to be sorted (<code>n</code>) when counting sort is implemented:</p>
 <ul>
-	<li>If $b < \log n$, choose $r=b$.</li>
-	<li>If $b \geq \log n$, choose $r=\log n$.</li>
+	<li>If $$b < \log n$$, choose $$r=b$$.</li>
+	<li>If $$b \geq \log n$$, choose $$r=\log n$$.</li>
 </ul>
 <p>In the first case of the above critera, radix sort degrades to counting sort. A big advantage of radix sort over direct counting sort, I think, is that it uses less auxiliary space at each time if r is small enough. For example, given an input array of size 1000 with max number 10000, instead of using <code>B.length=10000</code> in counting sort, only <code>B.length=256</code> is needed in radix sort if you group one byte each time as a bin (r=8 bits). In practice, if space is a concern, an upper limit on r might be a necessary trade off between space and time.</p>
 <h3>C++ Code</h3>
@@ -169,7 +169,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 <p class="note">The above example reuses the previous <a href="code-count-sort" class="inline-link">counting sort</a> code.</p>
 <hr>
 <h2 id="section-bucket-sort">Bucket Sort</h2>
-<p><strong>Bucket sort</strong> runs in $O(n)$ time when the elements from input array are <strong>uniformly distributed</strong>. Each input element can be grouped into a small bin (bucket) that with equal range.  In the following example, array <code>buckets</code> is created to store the list of each bucket.</p>
+<p><strong>Bucket sort</strong> runs in $$O(n)$$ time when the elements from input array are <strong>uniformly distributed</strong>. Each input element can be grouped into a small bin (bucket) that with equal range.  In the following example, array <code>buckets</code> is created to store the list of each bucket.</p>
 <br>
 <figure>
 	<p><img id="img-bucket" class="center"></p>
@@ -178,7 +178,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 	</figcaption> 
 </figure>
 <br>
-<p>In practice, as long as the sum of the square of bin size is linear, the running time will remain linear even if the input is not uniformly distributed. Like counting sort, the space complexity of bucket sort is also $O(n)$.</p>
+<p>In practice, as long as the sum of the square of bin size is linear, the running time will remain linear even if the input is not uniformly distributed. Like counting sort, the space complexity of bucket sort is also $$O(n)$$.</p>
 <br>
 <h3>C++ Code</h3>
 <div class="code-block" id="user-src-7"></div>
@@ -202,58 +202,58 @@ This float-down procedure at each step can be generalized and is called <strong>
 	<tbody>
 		<tr>
 			<td>Insertion sort</td>
-			<td class="quadratic-complexity-time">$O(n^2)$</td>
-			<td class="quadratic-complexity-time">$O(n^2)$</td>
+			<td class="quadratic-complexity-time">$$O(n^2)$$</td>
+			<td class="quadratic-complexity-time">$$O(n^2)$$</td>
 			<td class="stable">Yes</td>
-			<td class="constant-complexity-space">$O(1)$</td>
+			<td class="constant-complexity-space">$$O(1)$$</td>
 			<td class="quadratic-complexity-time">8.75 s</td>
 		</tr>
 		<tr>
 			<td>Merge sort</td>
-			<td class="nlogn-complexity-time">$O(n\log n)$</td>
-			<td class="nlogn-complexity-time">$O(n\log n)$</td>
+			<td class="nlogn-complexity-time">$$O(n\log n)$$</td>
+			<td class="nlogn-complexity-time">$$O(n\log n)$$</td>
 			<td class="stable">Yes</td>
-			<td class="linear-complexity-space">$O(n)$</td>
+			<td class="linear-complexity-space">$$O(n)$$</td>
 			<td class="nlogn-complexity-time">0.027 s</td>
 		</tr>
 		<tr>
 			<td>Quick sort</td>
-			<td class="nlogn-complexity-time">$O(n\log n)$</td>
-			<td class="quadratic-complexity-time">$O(n^2)$</td>
+			<td class="nlogn-complexity-time">$$O(n\log n)$$</td>
+			<td class="quadratic-complexity-time">$$O(n^2)$$</td>
 			<td class="unstable">No</td>
-			<td class="constant-complexity-space">$O(1)$</td>
+			<td class="constant-complexity-space">$$O(1)$$</td>
 			<td class="nlogn-complexity-time">0.024 s</td>
 		</tr>
 		<tr>
 			<td>Heap sort</td>
-			<td class="nlogn-complexity-time">$O(n\log n)$</td>
-			<td class="nlogn-complexity-time">$O(n\log n)$</td>
+			<td class="nlogn-complexity-time">$$O(n\log n)$$</td>
+			<td class="nlogn-complexity-time">$$O(n\log n)$$</td>
 			<td class="unstable">No</td>
-			<td class="constant-complexity-space">$O(1)$</td>
+			<td class="constant-complexity-space">$$O(1)$$</td>
 			<td class="nlogn-complexity-time">0.043 s</td>
 		</tr>
 		<tr>
 			<td>Counting sort</td>
-			<td class="linear-complexity-time">$O(n)$</td>
-			<td class="linear-complexity-time">$O(n)$</td>
+			<td class="linear-complexity-time">$$O(n)$$</td>
+			<td class="linear-complexity-time">$$O(n)$$</td>
 			<td class="stable">Yes</td>
-			<td class="linear-complexity-space">$O(n)$</td>
+			<td class="linear-complexity-space">$$O(n)$$</td>
 			<td class="linear-complexity-time">0.0034 s</td>
 		</tr>
 		<tr>
 			<td>Radix sort</td>
-			<td class="linear-complexity-time">$O(kn)$</td>
-			<td class="linear-complexity-time">$O(kn)$</td>
+			<td class="linear-complexity-time">$$O(kn)$$</td>
+			<td class="linear-complexity-time">$$O(kn)$$</td>
 			<td class="stable">Yes</td>
-			<td class="linear-complexity-space">$O(n+k)$</td>
+			<td class="linear-complexity-space">$$O(n+k)$$</td>
 			<td class="linear-complexity-time">0.0050 s</td>
 		</tr>
 		<tr>
 			<td>Bucket sort</td>
-			<td class="linear-complexity-time">$O(n)$</td>
-			<td class="quadratic-complexity-time">$O(n^2)$</td>
+			<td class="linear-complexity-time">$$O(n)$$</td>
+			<td class="quadratic-complexity-time">$$O(n^2)$$</td>
 			<td class="stable">Yes</td>
-			<td class="linear-complexity-space">$O(n)$</td>
+			<td class="linear-complexity-space">$$O(n)$$</td>
 			<td class="indeterminate-time">0.12 s</td>
 		</tr>
 	</tbody>

@@ -19,7 +19,7 @@
 <h3>stack.cpp</h3>
 <div class="code-block" id="user-src-1"></div>
 <div class="output-block" id="output-1"></div>
-<p>All operations, push/pop and top, of stack take $O(1)$ time.</p>
+<p>All operations, push/pop and top, of stack take $$O(1)$$ time.</p>
 <p class="note">To include c++11 using g++ compiler: g++ -std=c++11 stack.cpp </p>
 <hr>
 <h2 id="section-queue">Queue</h2>
@@ -35,7 +35,7 @@
 <h3>queue.cpp</h3>
 <div class="code-block" id="user-src-2"></div>
 <div class="output-block" id="output-2"></div>
-<p>Similar to <a class="inline-link" href="#section-stack">stack</a>, all operations, enqueue/dequeue and top on queue take $O(1)$ time.</p>
+<p>Similar to <a class="inline-link" href="#section-stack">stack</a>, all operations, enqueue/dequeue and top on queue take $$O(1)$$ time.</p>
 <hr>
 <h2 id="section-list">List</h2>
 <p>List or more precisely, doubly linked list, is a more flexible data structure which can be accessed from any position. Previous <a class="inline-link" href="#section-stack">stack</a> and <a class="inline-link" href="#section-queue">queue</a> implement preallocated array while list implements dynamic allocated nodes and pointers to link them together. Each node in the list contains pointers that point to the previous and the next node.</p>
@@ -50,7 +50,7 @@
 <h3>list.cpp</h3>
 <div class="code-block" id="user-src-3"></div>
 <div class="output-block" id="output-3"></div>
-<p>Inserting/removing from either end of list take $O(1)$ time. It is also worthwhile to note that in the sample code above, the previous pointer is implemented by <code>std::weak_ptr</code> to resolve cyclic reference problem of <code>std::shared_ptr</code>.</p>
+<p>Inserting/removing from either end of list take $$O(1)$$ time. It is also worthwhile to note that in the sample code above, the previous pointer is implemented by <code>std::weak_ptr</code> to resolve cyclic reference problem of <code>std::shared_ptr</code>.</p>
 <hr>
 <h2 id="section-list-sentinel">List with sentinel</h2>
 <p>An additional node (<strong>sentinel</strong>) can be inserted between the head and tail of doubly linked list to form a circular linked list (<strong>Fig 3. (b)</strong>). Sentinel can eliminate the boundary condition check in push and pop operations at the cost of additional space. The additional space cost might not be negligible in the case of large number of short lists. The constant factor speed improvement by sentinel is most obvious in inserting/removing from the middle of the list which is not implemented in the sample code.</p>
