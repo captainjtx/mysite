@@ -89,20 +89,19 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
 #}
-if not IS_PRODUCTION:
-    DATABASES={
-            'default':{
-                'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': 'alwaysaprogrammer',
-                'USER': 'tengi',
-                'PASSWORD': 'loinliness',
-                'HOST': 'localhost',
-                'PORT': '',
-                }
+DATABASES={
+        'default':{
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'alwaysaprogrammer',
+            'USER': 'tengi',
+            'PASSWORD': 'loinliness',
+            'HOST': 'localhost',
+            'PORT': '',
             }
-#DATABASES['default'] = dj_database_url.config()
-#db_from_env = dj_database_url.config(conn_max_age=500)
-#DATABASES['default'].update(db_from_env)
+        }
+if IS_PRODUCTION:
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
