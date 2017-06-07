@@ -1,4 +1,5 @@
 $(function(){
+	$('#img-insertion').attr('src',staticURL+"image/insertion-sort.png");
 	$('#img-partition').attr('src',staticURL+"image/partition.png");
 	$('#img-max-heap').attr('src',staticURL+"image/max-heap.png");
 	$('#img-build-max-heap').attr('src',staticURL+"image/build-max-heap.png");

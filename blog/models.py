@@ -7,6 +7,7 @@ class Article(models.Model):
     title=models.CharField(max_length=200,primary_key=True)
     pub_date=models.DateTimeField('Publish date')
     file=models.CharField(max_length=20,unique=True,null=True)
+    excerpt=models.TextField(max_length=1000,null=True)
     def __str__(self):
         return self.title
     class Meta:

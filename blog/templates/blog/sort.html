@@ -4,16 +4,24 @@
 <h2 class="blog-post-title">Basic Sorting Algorithms</h2>
 <p class="blog-post-meta">September 23, 2016 by <a href="#">TJ</a></p>
 <h2 id="section-motivation">Motivation</h2>
-<p>I took my algorithm class several years back. In the past few years, I kept going back to these basic topics. Finally, I decide to write down whatever I learned and and keep them as a note for future reference. The general idea and structure of this article are very similar to the <a href="https://mitpress.mit.edu/books/introduction-algorithms">textbook</a>. To save some space and time, however, those contents that are too "detailed" are ommited here, for exmaple, the math part, which I personally like a lot. Instead, for each algorithm, a C++ implementation is provided with explanations in the comments. Codes in this article are also available in <a href="https://github.com/captainjtx/freecoder/tree/master/SortingAlgorithms" target="_blank">GitHub</a>.</p>
+<p> The general idea and structure of this article come from the <a href="https://mitpress.mit.edu/books/introduction-algorithms">textbook</a>. For each algorithm, a C++ implementation is provided with explanations in the comments. Codes in this article are also available in <a href="https://github.com/captainjtx/freecoder/tree/master/SortingAlgorithms" target="_blank">GitHub</a>.</p>
 <hr>
 <h2 id="section-introduction">Introduction</h2>
 <p>
-Sorting problem is the most fundamental problem in either algorithm study or real-world applications. Many concepts of <strong>algorithm design</strong> can be reflected in different implementations of sorting algorithm. Real-world applications employ specific sorting algorithm directly or indirectly as a subroutine to improve efficency.
+Sorting problem is the most fundamental problem in either algorithm study or real-world applications. Many concepts of <strong>algorithm design</strong> can be reflected in different implementations of sorting algorithm. 
 </p>
-<p>Before jumping into a real algorithm, it is better to clarify some concepts. <strong>Stable</strong> sorting means that the original order of equal elements is maintained. The <strong>time complexity</strong> means the runing time of the algorithm in asymptotic way. <strong>Space complexity</strong> means the additional space needed to store intermediate variables needed by the algorithm. During complexity analysis, constant factor is usually discarded.</p>
+<p>Before jumping into a real algorithm, it is better to clarify some concepts. <strong>Stable</strong> sorting means that the original order of equal elements is maintained. The <strong>time complexity</strong> means the runing time of the algorithm in asymptotic way. <strong>Space complexity</strong> means the additional space needed to store intermediate variables needed by the algorithm. In terms of complexity analysis, constant factor is discarded for simplicity as it does not affect the aymptotic result.</p>
 <hr>
 <h2 id="section-insert-sort">Insertion Sort</h2>
-<p>Insertion sort is a simple and practical approach. It can be understood as: having a sorted subarray A[1,...,j-1], insert A[j] into the array so that A[1,...,j] will also be sorted. Here is the C++ implementation using template:<p>
+<p>Insertion sort is a simple and practical approach. It can be understood as: having a sorted subarray A[1,...,j-1], insert A[j] into the array so that A[1,...,j] will also be sorted (<a href="#img-insertion" class="inline-link">Fig 1</a>), just like what you do to insert the newly obained poker into the sorted pile on your hand !</p>
+<figure>
+	<p><img id="img-insertion" class="center"></p>
+	<figcaption>
+	<strong>Fig 1. </strong> Continuously shifting values until the right position for the new value 7. Tip: keep a temporary copy of 7 and shift the element to the right one by one. No need to do pair-wise swap.
+	</figcaption> 
+</figure>
+<br>
+<p>Here is the C++ implementation using template:</p>
 <h3>C++ Code</h3>
 <div class="code-block" id="user-src-1"></div>
 <div class="output-block" id="output-1"></div>
@@ -127,7 +135,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 <h3>C++ Code</h3>
 <div class="code-block" id="user-src-4"></div>
 <div class="output-block" id="output-4"></div>
-<p class="note">The example code of max-heapify here uses <a href="https://en.wikipedia.org/wiki/Tail_call" target="_blank">tail-recursion</a>. Generally it can be optimized automatically to its equivalent loop call, which consumes constant stack space. Hoever, even if it is not optimized, the stack space used would be \(O(\log n)\), which in practice, is not bad at all.</p> 
+<p class="note">The example code of max-heapify here uses <a href="https://en.wikipedia.org/wiki/Tail_call" target="_blank">tail-recursion</a>. Generally it can be optimized automatically to its equivalent loop call, which consumes constant stack space. However, even if it is not optimized, the stack space used would be \(O(\log n)\), which in practice, is not bad at all.</p> 
 <hr>
 <h2 id="section-comparison-sort">Comparison Sort</h2>
 <p>We note that <a href="#section-merge-sort" class="inline-link">mergesort</a>, <a href="#section-quick-sort" class="inline-link">quicksort</a> and <a href="#section-heap-sort" class="inline-link">heapsort</a> have somehting in common: they determine the sorting order by only comparing between input elements. These types of sorting algorithms are therefore called <strong>comparison sorts</strong>.  
@@ -135,7 +143,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 	<p>Any comparison sort algorithm requires \(\Omega(n\log n)\) comparisons in the worst case.</p>
 	<a href="https://mitpress.mit.edu/books/introduction-algorithms" class="citation">----Introduction to Algorithms</a>
 </blockquote>
-<p>As the worst case running time of <a href="#section-merge-sort" class="inline-link">mergesort</a> and  <a href="#section-quick-sort" class="inline-link">quicksort</a> are \(O(n\log n)\), both of them are <strong>asymptotically</strong> optimal comparison sorts. Although, <a href="#section-quick-sort" class="inline-link">quicksort</a> is not <strong>asymptotically</strong> optimal, a good implementation of it usually outperforms mergesort and heapsort in practice with a smaller constant k in the actual running time of \(O(k~n\log n)\).</p>  
+<p>As the worst case running time of <a href="#section-merge-sort" class="inline-link">mergesort</a> and  <a href="#section-heap-sort" class="inline-link">heapsort</a> are \(O(n\log n)\), both of them are <strong>asymptotically</strong> optimal comparison sorts. Although, <a href="#section-quick-sort" class="inline-link">quicksort</a> is not <strong>asymptotically</strong> optimal, a good implementation of it usually outperforms mergesort and heapsort in practice with a smaller constant k in the actual running time of \(O(k~n\log n)\). At the cost of space complexity, however, <strong>linear</strong> time-complexity (\(O(n)\)) sorting can be achieved as shown in the following sections ...</p>
 <hr>
 <h2 id="section-counting-sort">Counting Sort</h2>
 <p><strong>Counting sort</strong> runs in \(O(n)\), assuming the input elements are integers within an already known range. It breaks the limination of comparison sort by indexing the element directly at its own value.</p>
@@ -328,4 +336,5 @@ This float-down procedure at each step can be generalized and is called <strong>
 
 {% block articlejs %}
 <script src="{% static "blog/js/sort.js" %}"></script>
+<link href="{% static "blog/css/sort.css" %}" rel="stylesheet">
 {% endblock %}

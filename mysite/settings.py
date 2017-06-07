@@ -24,8 +24,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-IS_PRODUCTION=os.environ.get("IS_PRODUCTION",False)
-SECRET_KEY = os.environ.get("SECRET_KEY",'0g0@=-76tj^a3m*6jm0=-9l)35#k%w2s#bmb3')
+IS_PRODUCTION=os.environ.get("IS_PRODUCTION",'False').lower()=='true'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if IS_PRODUCTION:
@@ -35,7 +35,6 @@ else:
 #DEBUG = os.environ.get("DEBUG",False) 
 
 ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost','always-a-programmer.herokuapp.com']
-
 
 # Application definition
 
@@ -144,7 +143,6 @@ USE_TZ = True
 AWS_STORAGE_BUCKET_NAME = 'always-a-programmer'
 AWS_CLOUDFRONT_DOMAIN = 'dvbg2t7tkoa4y.cloudfront.net'
 
-
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
@@ -158,12 +156,13 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 # refers directly to STATIC_URL. So it's safest to always set it.
 
 
-if IS_PRODUCTION or os.environ.get('PUSH_S3'):
+if IS_PRODUCTION or os.environ.get('PUSH_S3','False').lower()=='true':
     #STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
     STATIC_URL="https://%s/" % AWS_CLOUDFRONT_DOMAIN
     # Tell the staticfiles app to use S3Boto storage when writing the collected static files (when
     # you run `collectstatic`).
     STATICFILES_STORAGE = 'mysite.customStorages.StaticStorage'
+
     #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 else:
     STATIC_URL='/static/'

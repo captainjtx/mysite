@@ -230,16 +230,6 @@ p img.center
 	margin: 0 auto;
 	width: 40%;
 }
-#img-build-max-heap
-{
-	width: 80%;
-}
-#img-partition, #img-stack, #img-queue
-{
-	width: 70%;
-}
-#img-bucket, #img-list
-{width: 60%;}
 
 figcaption
 {
