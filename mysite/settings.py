@@ -28,11 +28,7 @@ IS_PRODUCTION=os.environ.get("IS_PRODUCTION",'False').lower()=='true'
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if IS_PRODUCTION:
-    DEBUG=False
-else:
-    DEBUG=True
-#DEBUG = os.environ.get("DEBUG",False) 
+DEBUG=os.environ.get("DEBUG",'False').lower()=='true'
 
 ALLOWED_HOSTS = ['www.always-a-programmer.com','localhost','always-a-programmer.herokuapp.com']
 
