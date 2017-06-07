@@ -1,6 +1,5 @@
 *.swp
 test/
-blog/migrations/*
 conf/
 code/Interview/
 collected_static
