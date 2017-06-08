@@ -11,5 +11,6 @@ urlpatterns = [
         url(r'^(?P<filename>[^/]+)/$', views.article, name='article'),
         url(r'^comment/get/([^/]+)/$', views.getComment, name='get comment'),
         url(r'^comment/add$',views.addComment),
+        url(r'^featured/get$',views.getFeaturedArticles),
 ]
 

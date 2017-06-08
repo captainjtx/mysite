@@ -5,7 +5,8 @@ import datetime
 import json 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import Http404
-
+def getFeaturedArticles(request):
+    raise Http404('Not implemented yet !')
 def getComment(request,title):
     dict={}
     dict['success']=0
