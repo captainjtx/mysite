@@ -26,7 +26,7 @@
   }
 })();
 // Sort by date, then score (reversed), then name
-array.sortBy(function(o){ return [ o.date, -o.score, o.name ] };
+//array.sortBy(function(o){ return [ o.date, -o.score, o.name ] };
 $(function(){
 	$.getJSON("/blog/get/all/articles",function(data){
 		console.log(data.articles);
