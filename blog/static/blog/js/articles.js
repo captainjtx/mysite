@@ -17,14 +17,6 @@ function initAceEditor()
 	registerButtonEvents();
 }
 
-var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-];
-
-function pad(n) {
-    return (n < 10) ? ("0" + n) : n;
-}
-
 $(function(){
 	$.getJSON("/blog/comment/get/"+$('.blog-post-title').text(),function(data){
 		console.log(data.comment);
@@ -65,5 +57,4 @@ $('body').scrollspy({
 		target: '.bs-docs-sidebar',
 		offset: 40
 	});
-var staticURL="https://dvbg2t7tkoa4y.cloudfront.net/blog/";
 //var codeURL="https://raw.githubusercontent.com/captainjtx/freecoder/master/DataStructures/";

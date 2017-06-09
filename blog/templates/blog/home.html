@@ -6,8 +6,7 @@
 		<div class="col-md-2">
 		</div>
 		<div class="col-md-8 blog-main">
-			<p>
-			</p>
+			<div id="excerpts"></div>
 		</div>
 		<div class="col-md-2">
 		</div>
@@ -15,3 +14,7 @@
 </div>
 {% endblock %}
 
+{% block articlejs %}
+<script src="{% static "js/github-stars/github-stars.js" %}"></script>
+<script src="{% static "blog/js/home.js" %}"></script>
+{% endblock %}

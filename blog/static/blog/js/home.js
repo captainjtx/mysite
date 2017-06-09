@@ -1,35 +1,31 @@
 $(function(){
-	$.getJSON("/blog/comment/get/"+$('.blog-post-title').text(),function(data){
-		console.log(data.comment);
-		var commentContent='';
-		for (var index=0; index<data.comment.length; ++index)
+	$.getJSON("/blog/get/all/articles",function(data){
+		console.log(data.articles);
+		var content='';
+		for (var index=0; index<data.articles.length; ++index)
 		{
-			commentContent+='<div class="comment-content">';
-			commentContent+=data.comment[index].content;
-			commentContent+='</div></br>';
-			commentContent+='<div class="comment-reader">';
-			commentContent+='<p>';
+			content+='<div class="comment-content">';
+			content+=data.articles[index].excerpt;
+			content+='</div></br>';
+			content+='<div class="comment-reader">';
+			content+='<p>';
 
-			var date=new Date(data.comment[index].datetime);
-			commentContent+=monthNames[date.getMonth()];
-			commentContent+=" ";
-			commentContent+=date.getDay();
-			commentContent+=" '";
-			commentContent+=date.getFullYear().toString().substr(2,2);
-			commentContent+=" at ";
-			commentContent+=date.getHours();
-			commentContent+=":";
-			commentContent+=pad(date.getMinutes());
+			var date=new Date(data.articles[index].datetime);
+			content+=monthNames[date.getMonth()];
+			content+=" ";
+			content+=date.getDay();
+			content+=" '";
+			content+=date.getFullYear().toString().substr(2,2);
+			content+=" at ";
+			content+=date.getHours();
+			content+=":";
+			content+=pad(date.getMinutes());
 
-			commentContent+='</br>';
-			commentContent+=data.comment[index].reader;
-			commentContent+='</p></div>';
+			content+='</br>';
+			content+=data.articles[index].title;
+			content+='</p></div>';
 		}
 
-		$('#comment-list').html(commentContent);
+		$('#excerpts').html(content);
 	});
-	githubStars("captainjtx/mysite",function(stars){
-		$('#btn-star-count div').html(stars);
-	});
-	$("p.note").prepend("<strong>Note: </strong>");
 });

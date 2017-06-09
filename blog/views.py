@@ -5,8 +5,22 @@ import datetime
 import json 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import Http404
-def getFeaturedArticles(request):
-    raise Http404('Not implemented yet !')
+def getAllArticles(request):
+    dict={}
+    dict['success']=0
+    try:
+        allArticles=Article.objects.all()
+    except Article.DoesNotExist:
+        raise Http404('No article records !')
+    data=[]
+    for art in allArticles:
+        data+=[{'title': art.title,'datetime': art.pub_date.isoformat(),'file': art.file,'excerpt': art.excerpt}]
+
+    dict['success']=1
+    dict['articles']=data;
+    obj=json.dumps(dict,cls=DjangoJSONEncoder)
+    return HttpResponse(obj)
+        
 def getComment(request,title):
     dict={}
     dict['success']=0
