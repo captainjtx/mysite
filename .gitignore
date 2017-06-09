@@ -11,5 +11,6 @@ venv
 .env
 collected_static/
 icons/
+*.dump
 
 

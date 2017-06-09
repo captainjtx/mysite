@@ -2,12 +2,10 @@
 {
 	width: 80%;
 }
-#img-partition, #img-stack, #img-queue
+#img-partition
 {
 	width: 70%;
 }
-#img-bucket, #img-list
-{width: 60%;}
 #img-insertion
 {
 	width: 70%;

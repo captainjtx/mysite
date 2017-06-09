@@ -1,0 +1,23 @@
+.excerpt-item{
+	padding: 20px;
+	margin-bottom: 30px;
+	border: 1px solid #e5e5e5;
+	border-left: 10px solid #5f5f5f;
+}
+.excerpt-item:hover{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.excerpt-content{
+	font-size: 0.8em;
+	clear: both;
+}
+.excerpt-title{
+	font-size: 1.5em;
+	float: left;
+}
+.excerpt-time{
+	font-size: 0.9em;
+	float: right;
+	margin-top: 10px;
+}
+

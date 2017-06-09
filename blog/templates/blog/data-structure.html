@@ -1,7 +1,7 @@
 {% extends "blog/article.html" %}
 {% load static %}
 {% block content %}
-<h2 class="blog-post-title">Basic Data Structure</h2>
+<h2 class="blog-post-title">Basic Data Structures</h2>
 <p class="blog-post-meta">Nov 29, 2016 by <a href="#">TJ</a></p>
 <h2 id="section-introduction">Introduction</h2>
 <p>This article includes basic data structures and ready-to-use C++ implementations. More detailed explanations can be found in the <a href="https://mitpress.mit.edu/books/introduction-algorithms">'Introduction to Algorithms'</a> book. All codes I wrote here are <a href="https://github.com/captainjtx/freecoder/tree/master/DataStructure" target="_blank">freely available</a>.</p>
@@ -104,4 +104,5 @@
 
 {% block articlejs %}
 <script src="{% static "blog/js/data-structure.js" %}"></script>
+<link href="{% static "blog/css/data-structure.css" %}" rel="stylesheet">
 {% endblock %}
