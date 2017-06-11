@@ -1,16 +1,14 @@
 *.swp
+conf
+icons
 test/
-conf/
-code/Interview/
 collected_static
-xiuqingmarryme/
 *.pyc
 *.out
 common_static/
 venv
 .env
 collected_static/
-icons/
 *.dump
 
 
