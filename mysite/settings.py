@@ -24,7 +24,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-IS_PRODUCTION=os.environ.get("IS_PRODUCTION",'False').lower()=='true'
 LOCAL_DATABASE=os.environ.get("LOCAL_DATABASE","True").lower()=='true'
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -153,7 +152,9 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 # refers directly to STATIC_URL. So it's safest to always set it.
 
 
-if IS_PRODUCTION or os.environ.get('PUSH_S3','False').lower()=='true':
+if os.environ.get('LOCAL_STATIC','True').lower()=='true':
+    STATIC_URL='/static/'
+else:
     #STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
     STATIC_URL="https://%s/" % AWS_CLOUDFRONT_DOMAIN
     # Tell the staticfiles app to use S3Boto storage when writing the collected static files (when
@@ -161,8 +162,6 @@ if IS_PRODUCTION or os.environ.get('PUSH_S3','False').lower()=='true':
     STATICFILES_STORAGE = 'mysite.customStorages.StaticStorage'
 
     #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-else:
-    STATIC_URL='/static/'
 
 STATICFILES_DIRS=[
         os.path.join(BASE_DIR,'common_static'),
