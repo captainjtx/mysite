@@ -5,6 +5,10 @@ import datetime
 import json 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import Http404
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from mysite import settings
+import os.path
+
 def getAllArticles(request):
     dict={}
     dict['success']=0
@@ -20,7 +24,7 @@ def getAllArticles(request):
     dict['articles']=data;
     obj=json.dumps(dict,cls=DjangoJSONEncoder)
     return HttpResponse(obj)
-        
+
 def getComment(request,title):
     dict={}
     dict['success']=0
@@ -29,7 +33,7 @@ def getComment(request,title):
     try:
         articleID=Article.objects.get(title=title)
     except Article.DoesNotExist:
-        raise Http404('Article "'+ title+'.html" does not exist')
+        raise Http404('Article "'+ title+'" does not exist')
 
     comments=Comment.objects.filter(article=articleID)
     data=[]
@@ -40,9 +44,9 @@ def getComment(request,title):
         pub_date=ite.pub_date
         data+=[{'visitor': visitorName, 'content': content, 'vote': vote, 'datetime': pub_date.isoformat()}]
 
-    dict['comment']=data;
+    dict['comment']=data
     dict['success']=1
-    dict['message']=info;
+    dict['message']=info
 
     obj=json.dumps(dict,cls=DjangoJSONEncoder)
     return HttpResponse(obj)
@@ -78,10 +82,10 @@ def addComment(request):
             visitorID=Visitor.objects.get(email=email)
 
             newComment=Comment(article=articleID,
-                               visitor=visitorID,
-                               content=comment,
-                               vote=vote,
-                               pub_date=pub_date)
+                    visitor=visitorID,
+                    content=comment,
+                    vote=vote,
+                    pub_date=pub_date)
             newComment.save()
 
             dict['success']=1;
@@ -108,3 +112,26 @@ def home(request):
 def about(request):
     return render(request,'blog/home.html')
 # Create your views here.
+def getImage(request,imgname):
+    extension=os.path.splitext(imgname)[1]
+    if extension=='.svg':
+        ct="image/svg+xml"
+    elif extension=='.png':
+        ct="image/png"
+    try:
+        with open('blog/'+static('blog/image/'+imgname), "rb") as f:
+            return HttpResponse(f.read(), content_type=ct)
+    except IOError:
+        for url in settings.STATICFILES_DIRS:
+            try:
+                with open(url+'/image/'+imgname, "rb") as f:
+                    return HttpResponse(f.read(), content_type=ct)
+            except IOError:
+                continue
+        raise Http404('Image "'+ imgname+'" does not exist')
+def getCode(request,codefile):
+    try:
+        with open('blog/'+static('blog/code/'+codefile),"r") as f:
+            return HttpResponse(f.read(),content_type="plain/text")
+    except IOError:
+        raise Http404('Code file "'+ codefile +'" does not exist')

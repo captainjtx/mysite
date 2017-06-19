@@ -7,6 +7,14 @@ app.controller('FrmController', [
 		'$scope',
 		'$http',
 		function($scope,$http) {
+			if(location.hostname==='localhost'||location.hostname==='127.0.0.1')
+			{
+				$scope.commonStaticURL='../../';
+			}
+			else
+			{
+				$scope.commonStaticURL='http://dvbg2t7tkoa4y.cloudfront.net/';
+			}
 			$scope.comment = [];
 			$scope.btn_add = function() {
 				if($scope.txtComment !=''){
@@ -27,7 +35,7 @@ app.controller('FrmController', [
 						// called asynchronously if an error occurs
 						// or server returns response with an error status.
 						console.log(response);
-						console.log('faile');
+						console.log('fail');
 					});
 				}
 			}

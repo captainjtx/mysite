@@ -57,17 +57,17 @@
 						<div class="col-md-6">
 							<span>*Name:</span>
 							<input type="text" name="name" placeholder="Your Name" ng-model="txtName" required>
-							<img ng-show="!commentForm.name.$error.required" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
+							<img ng-show="!commentForm.name.$error.required" ng-src={{commonStaticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
 						</div>
 						<div class="col-md-6">
 							<span>*Email:</span>
 							<input type="email" name="email" placeholder="Your Email Address" ng-model="txtEmail" required>
-							<img ng-if="commentForm.email.$valid" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
-							<img ng-if="commentForm.email.$invalid && !commentForm.email.$pristine"  ng-src={{staticURL+"image/incorrect.svg"}} class="indicator-icon" title="Invalid">
+							<img ng-if="commentForm.email.$valid" ng-src={{commonStaticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
+							<img ng-if="commentForm.email.$invalid && !commentForm.email.$pristine"  ng-src={{commonStaticURL+"image/incorrect.svg"}} class="indicator-icon" title="Invalid">
 						</div>
 						<div class="col-xs-12">
 							<span>*Comment:</span>
-							<img ng-show="!commentForm.comment.$error.required" ng-src={{staticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
+							<img ng-show="!commentForm.comment.$error.required" ng-src={{commonStaticURL+"image/correct.svg"}} class="indicator-icon" title="Correct">
 							<textarea ng-model="txtComment" placeholder="Your Comment" name="comment" required></textarea>
 							<button ng-click='btn_add();' class="btn btn-info">Submit</button>
 						</div>
