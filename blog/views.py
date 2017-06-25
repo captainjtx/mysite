@@ -121,7 +121,6 @@ def getImage(request,imgname):
         ct="image/png"
 
     try:
-        print staticfiles_storage.url('blog/'+imgname)
         f=staticfiles_storage.open('blog/'+imgname)
         return HttpResponse(f.read(), content_type=ct)
     except IOError:
@@ -153,5 +152,4 @@ def getCV(request):
         #                return HttpResponse(f.read(), content_type='application/pdf')
         #        except IOError:
         #            continue
-        print(staticfiles_storage.url('cv/cv.pdf'))
         raise Http404('"cv.pdf" does not exist')
