@@ -7,6 +7,7 @@ app.controller('FrmController', [
 		'$scope',
 		'$http',
 		function($scope,$http) {
+//			var scripts = document.getElementsByTagName("script"),src = scripts[scripts.length-1].src;
 			$scope.commonStaticURL='../../';
 			$scope.comment = [];
 			$scope.btn_add = function() {
