@@ -138,14 +138,11 @@ def getImage(request,imgname):
         raise Http404('Image "'+ imgname+'" does not exist')
 def getCode(request,codefile):
     try:
-        f=staticfiles_storage.open('blog/code/'+codefile);
+        print(staticfiles_storage.url('blog/code/'+codefile))
+        f=staticfiles_storage.open('blog/code/'+codefile)
         content=f.read();
         return HttpResponse(content,content_type='text/plain')
     except IOError:
-        #try:
-        #    with open('blog/'+static('blog/code/'+codefile),"r") as f:
-        #        return HttpResponse(f.read(),content_type="text/plain")
-        #except IOError:
         raise Http404('Code file "'+ codefile +'" does not exist')
 def getCV(request):
     try:
