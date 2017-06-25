@@ -8,6 +8,7 @@ from django.http import Http404
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from mysite import settings
 import os.path
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 def getAllArticles(request):
     dict={}
@@ -135,3 +136,20 @@ def getCode(request,codefile):
             return HttpResponse(f.read(),content_type="plain/text")
     except IOError:
         raise Http404('Code file "'+ codefile +'" does not exist')
+def getCV(request):
+    try:
+        f=staticfiles_storage.open('cv/cv.pdf');
+        content=f.read();
+        return HttpResponse(content,content_type='application/pdf')
+    except IOError:
+        try:
+            with open('blog/'+static('blog/cv/cv.pdf')) as f:
+                return HttpResponse(f.read(), content_type='application/pdf')
+        except IOError:
+            for url in settings.STATICFILES_DIRS:
+                try:
+                    with open(url+'/cv/cv.pdf') as f:
+                        return HttpResponse(f.read(), content_type='application/pdf')
+                except IOError:
+                    continue
+            raise Http404('"cv.pdf" does not exist')

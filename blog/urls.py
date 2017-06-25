@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
         url(r'^$',views.home),
         url(r'^home/$',views.home),
+        url(r'^cv/$',views.getCV),
         url(r'^about/$',views.about),
         url(r'^image/(?P<imgname>[^/]+)/$', views.getImage,name='imgname'),
         url(r'^code/(?P<codefile>.+)/$', views.getCode,name='codefile'),

@@ -223,6 +223,10 @@ td.indeterminate-time
 	background-color: #ffc;
 }
 
+p.center
+{
+	text-align: center;
+}
 
 p img.center
 {

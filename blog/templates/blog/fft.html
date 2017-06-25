@@ -1,0 +1,79 @@
+{% extends "blog/article.html" %}
+{% load static %}
+{% block content %}
+<h2 class="blog-post-title">Fast Fourier Transform (FFT)</h2>
+<p class="blog-post-meta">Jun 19, 2017 by <a href="#">TJ</a></p>
+<h2 id="section-introduction">Introduction</h2>
+<p>
+This article mainly focus on the famous fast discrete Fourier transform (<strong>DFT</strong>) algorithm, a.k.a fast Fourier transform (<strong>FFT</strong>). It is a fundamental technique for spectrum analysis in many fields such as digital signal processing (DSP), image processing and so on. In addition to the recursive and iterative (butterfly) implementation, I also attempted multithreaded version, although the parallel solution is not unique. C++ codes are provided in the article and can also be downloaded from <a href=””>here</a>.
+</p>
+<hr>
+<h2 id="section-dft">Discrete Fourier Transform (DFT)</h2>
+<p>
+Discrete Fourier transform is a way of transforming discrete signal from time domain to frequency domain. The idea is to represent the original signal by the sum of a series of scaled and shifted periodic signals. These periodic signals are specifically designed basis functions which are the polynomials of Nth complex roots of unity: 
+$$[1, e^{j2\pi 1/N}, e ^{j2\pi 2/N} ,\dots , e^{j2\pi (N-1)/N}]$$
+where N is the length of the signal and each basis takes the following form:
+$$[1, e^{j2\pi k/N}, e^{j2\pi 2k/N} ,\dots , e^{j2\pi (N-1)k/N} ], \quad k=[0, 1, 2, \dots , N-1]$$
+Mathematically, it is to solve \(X\) from the following linear equations (\(VX=x\)):
+</p>
+<p class='center'>
+$$\begin{pmatrix}
+1 & 1 & 1 & \dots & 1 \\ 
+1 & w_{N}^1 & w_{N}^{2} & \dots & w_{N}^{N-1} \\
+1 & w_{N}^{2} & w_{N}^{4} & \dots & w_{N}^{2(N-1)} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & w_{N}^{N-1} & w_{N}^{2(N-1)} & \dots & w_{N}^{(N-1)(N-1)} 
+\end{pmatrix}
+\begin{pmatrix} X[0] \\ X[1] \\ X[2] \\ \vdots \\ X[N-1] \end{pmatrix} =
+\begin{pmatrix} x[0] \\ x[1] \\ x[2] \\ \vdots \\ x[N-1] \end{pmatrix}$$
+</p>
+<p>
+Where, \(w_N^k=e^{j2\pi k/N}\) and the left most matrix \(V\) is called Vandermonde matrix. It is a symmetric full-rank (non-singular) matrix. Each column/row vector represents a basis with different frequency. Its inverse matrix \(V^{-1}\) is the <a href="https://en.wikipedia.org/wiki/Conjugate_transpose" target="_blank">conjugate transpose</a> of \(V\) scaled by \(N\), i.e. \(V^{-1}=V^{*}/N\).
+</p>
+<p class='proof'>
+</p>
+<p>
+The definition of DFT in matrix form is thus \(X=V^*x\), which is often represented as \(X=\mathscr{F}(x)\):
+$$\begin{pmatrix} X[0] \\ X[1] \\ X[2] \\ \vdots \\ X[N-1] \end{pmatrix} =
+\begin{pmatrix}
+1 & 1 & 1 & \dots & 1 \\ 
+1 & w_{N}^{-1} & w_{N}^{-2} & \dots & w_{N}^{-(N-1)} \\
+1 & w_{N}^{-2} & w_{N}^{-4} & \dots & w_{N}^{-2(N-1)} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & w_{N}^{-(N-1)} & w_{N}^{-2(N-1)} & \dots & w_{N}^{-(N-1)(N-1)} 
+\end{pmatrix}
+\begin{pmatrix} x[0] \\ x[1] \\ x[2] \\ \vdots \\ x[N-1] \end{pmatrix}$$
+
+According to the above linear equations, the time complexity of the original DFT is \(O(N^2)\). However, with optimization, this can be reduced to \(O(N\log N)\). 
+</p>
+<p class='note' id='scale-note'>
+The constant scale factor N is defined in inverse DFT as : \(x=\mathscr{F}^{-1}(X)=\frac{V}{N}X\). The scale factor of N ensures to get the original signal after taking DFT and inverse DFT in a row, i.e. \(x=\mathscr{F}^{-1}(\mathscr{F}(x))\). Actually, in order to maintain the power of the signal after DFT, one really should scale both DFT and inverse DFT by \(\sqrt{N}\). <a href="#section-scale">More on it.</a>  
+</p>
+
+<h2 id="section-divide">Divide and Conquer</h2>
+<p>
+An immediate optimization that come up is to use the symmetry property of DFT. It can be easily proven that \(X[k]=X^*[N-k]\). So, instead of computing the whole sequence of \(X\), one can compute the first half and deduce the other half by taking conjugate. This saves about half of the time. How can we do better ? Assuming N is power of 2: \(N=2^n\) (I will explain why later), we divide the DFT computation on original array into even (\(x_{even}=\{x[0], x[2], x[4], \dots, x[N-2]\}\)) and odd (\(x_{odd}=\{x[1], x[3], \dots, x[N-1]\}\)) indexed subarrays ! Based on \(w_N^{-2k}=e^{-j2\pi 2k/N}=e^{-j2\pi k/(N/2)}=w_{N/2}^{-k}\), for \(0\le k \le N/2-1\), we have:
+$$
+\begin{equation}
+\begin{split}
+X[k]=\sum_{m=0}^{N-1}x[m]w_N^{-mk} & =\sum_{m_0=0}^{N/2-1}x[2m_0]w_N^{-2m_0k}+\sum_{m_1=0}^{N/2-1}x[2m_1+1]w_N^{-(2m_1+1)k}\\
+& =\underbrace{\sum_{m_0=0}^{N/2-1}x[2m_0]w_{N/2}^{-m_0k}}_\text{even}+w_{N/2}^{-1}\underbrace{\sum_{m_1=0}^{N/2-1}x[2m_1+1]w_{N/2}^{-m_1k}}_\text{odd}\\
+\end{split}
+\end{equation}
+$$
+It turns out that the 'even' component in the above equation is actually the \(k^{th}\) element of \(\mathscr{F}(x_{even})\), while the 'odd' component is the \(k^{th}\) element of \(\mathscr{F}(x_{odd})\). We can perform DFT on two subarrays of size N/2 and use the results to compute the original DFT from X[0] to X[N/2-1] according to the above equation. For \(N/2\le x\le N-1\)), we simply use the symmetry property of DFT. Therefore, there are only N/2 multiplications and additions to be performed in the first recursion if we had the DFT results on the subarrays. This is the main idea of <strong>FFT</strong> which is a typical divide-and-conquer approach. The running time of FFT can be derived as \(T(N)=2T(N/2)+O(N)=N\log N\). Since N is power of 2, the dividing process is guaranteed to be legal in each recursion. In the naive case of only one element, DFT is simply the element itself: \(\mathscr{F}(x[k])=x[k]\).
+</p>
+
+<h2 id="section-padding">Zero Padding</h2>
+<p>What if N is not exact power of 2 ?</p>
+<h2 id="section-scale">Constant Scale Factor N</h2>
+<p>
+As mentioned <a href="#scale-note">earlier</a>, one really should scale DFT and inverse DFT equally by \(\sqrt{N}\), i.e. \(\mathscr{F}(x)=V^*x/\sqrt{N}\) and \(\mathscr{F}^{-1}(X)=Vx/\sqrt{N}\) to obtain power conservation during DFT:    
+$$\sum_{k=1}^{N-1}|x[k]|^2=\sum_{k=1}^{N-1}|X[k]|^2$$
+</p>
+
+{% endblock %}
+{% block articlejs %}
+<script src="{% static "blog/js/data-structure.js" %}"></script>
+<link href="{% static "blog/css/data-structure.css" %}" rel="stylesheet">
+{% endblock %}
