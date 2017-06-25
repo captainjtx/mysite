@@ -142,11 +142,11 @@ def getCode(request,codefile):
         content=f.read();
         return HttpResponse(content,content_type='text/plain')
     except IOError:
-        try:
-            with open('blog/'+static('blog/code/'+codefile),"r") as f:
-                return HttpResponse(f.read(),content_type="text/plain")
-        except IOError:
-            raise Http404('Code file "'+ codefile +'" does not exist')
+        #try:
+        #    with open('blog/'+static('blog/code/'+codefile),"r") as f:
+        #        return HttpResponse(f.read(),content_type="text/plain")
+        #except IOError:
+        raise Http404('Code file "'+ codefile +'" does not exist')
 def getCV(request):
     try:
         f=staticfiles_storage.open('cv/cv.pdf');
