@@ -119,37 +119,49 @@ def getImage(request,imgname):
         ct="image/svg+xml"
     elif extension=='.png':
         ct="image/png"
+
     try:
-        with open('blog/'+static('blog/image/'+imgname), "rb") as f:
-            return HttpResponse(f.read(), content_type=ct)
+        f=staticfiles_storage.open(imgname);
+        content=f.read();
+        return HttpResponse(content,content_type=ct)
     except IOError:
-        for url in settings.STATICFILES_DIRS:
-            try:
-                with open(url+'/image/'+imgname, "rb") as f:
-                    return HttpResponse(f.read(), content_type=ct)
-            except IOError:
-                continue
-        raise Http404('Image "'+ imgname+'" does not exist')
+        try:
+            with open('blog/'+static('blog/image/'+imgname), "rb") as f:
+                return HttpResponse(f.read(), content_type=ct)
+        except IOError:
+            for url in settings.STATICFILES_DIRS:
+                try:
+                    with open(url+'/image/'+imgname, "rb") as f:
+                        return HttpResponse(f.read(), content_type=ct)
+                except IOError:
+                    continue
+       raise Http404('Image "'+ imgname+'" does not exist')
 def getCode(request,codefile):
     try:
-        with open('blog/'+static('blog/code/'+codefile),"r") as f:
-            return HttpResponse(f.read(),content_type="plain/text")
+        f=staticfiles_storage.open('blog/code/'+codefile);
+        content=f.read();
+        return HttpResponse(content,content_type='text/plain')
     except IOError:
-        raise Http404('Code file "'+ codefile +'" does not exist')
+        try:
+            with open('blog/'+static('blog/code/'+codefile),"r") as f:
+                return HttpResponse(f.read(),content_type="text/plain")
+        except IOError:
+            raise Http404('Code file "'+ codefile +'" does not exist')
 def getCV(request):
     try:
         f=staticfiles_storage.open('cv/cv.pdf');
         content=f.read();
         return HttpResponse(content,content_type='application/pdf')
     except IOError:
-        try:
-            with open('blog/'+static('blog/cv/cv.pdf')) as f:
-                return HttpResponse(f.read(), content_type='application/pdf')
-        except IOError:
-            for url in settings.STATICFILES_DIRS:
-                try:
-                    with open(url+'/cv/cv.pdf') as f:
-                        return HttpResponse(f.read(), content_type='application/pdf')
-                except IOError:
-                    continue
-            raise Http404('"cv.pdf" does not exist')
+        #try:
+        #    with open('blog/'+static('blog/cv/cv.pdf')) as f:
+        #        return HttpResponse(f.read(), content_type='application/pdf')
+        #except IOError:
+        #    for url in settings.STATICFILES_DIRS:
+        #        try:
+        #            with open(url+'/cv/cv.pdf') as f:
+        #                return HttpResponse(f.read(), content_type='application/pdf')
+        #        except IOError:
+        #            continue
+        print(staticfiles_storage.url('cv/cv.pdf'))
+        raise Http404('"cv.pdf" does not exist')

@@ -7,14 +7,14 @@ app.controller('FrmController', [
 		'$scope',
 		'$http',
 		function($scope,$http) {
-			if(location.hostname==='localhost'||location.hostname==='127.0.0.1')
-			{
-				$scope.commonStaticURL='../../';
-			}
-			else
-			{
-				$scope.commonStaticURL='http://dvbg2t7tkoa4y.cloudfront.net/';
-			}
+			//if(location.hostname==='localhost'||location.hostname==='127.0.0.1')
+			//{
+			$scope.commonStaticURL='../../';
+			//}
+			//else
+			//{
+			//	$scope.commonStaticURL='http://dvbg2t7tkoa4y.cloudfront.net/';
+			//}
 			$scope.comment = [];
 			$scope.btn_add = function() {
 				if($scope.txtComment !=''){
