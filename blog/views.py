@@ -121,9 +121,11 @@ def getImage(request,imgname):
         ct="image/png"
 
     try:
+        #try remote
         f=staticfiles_storage.open('blog/'+imgname)
         return HttpResponse(f.read(), content_type=ct)
     except IOError:
+        #try to serve from local
         try: 
             with open('blog/static/blog/'+imgname, "rb") as f:
                 return HttpResponse(f.read(), content_type=ct)
