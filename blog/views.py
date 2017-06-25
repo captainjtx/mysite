@@ -121,19 +121,18 @@ def getImage(request,imgname):
         ct="image/png"
 
     try:
-        with open('blog/'+static('blog/image/'+imgname), "rb") as f:
-            return HttpResponse(f.read(), content_type=ct)
+        print staticfiles_storage.url('blog/'+imgname)
+        f=staticfiles_storage.open('blog/'+imgname)
+        return HttpResponse(f.read(), content_type=ct)
     except IOError:
-        for url in settings.STATICFILES_DIRS:
-            try:
-                with open(url+'/image/'+imgname, "rb") as f:
-                    return HttpResponse(f.read(), content_type=ct)
-            except IOError:
-                continue
-    raise Http404('Image "'+ imgname+'" does not exist')
+        try: 
+            with open('blog/static/blog/'+imgname, "rb") as f:
+                return HttpResponse(f.read(), content_type=ct)
+        except IOError:
+                raise Http404('Image "'+ imgname+'" does not exist')
 def getCode(request,codefile):
     try:
-        f=staticfiles_storage.open('blog/code/'+codefile)
+        f=staticfiles_storage.open('blog/'+codefile)
         content=f.read();
         return HttpResponse(content,content_type='text/plain')
     except IOError:

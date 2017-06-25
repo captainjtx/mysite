@@ -16,10 +16,16 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
+import blog
+from mysite import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^articles/', include('blog.urls')),
     url(r'^blog/', include('blog.urls')),
-    url(r'',include('blog.urls')),
+    url(r'^home/$',blog.views.home),
+    url(r'^cv/$',blog.views.getCV),
+    url(r'^about/$',blog.views.about),
+    url(r'^(?P<imgname>image/[^/]+)/$', views.getImage,name='imgname'),
+    url(r'^$',blog.views.home),
 ]
