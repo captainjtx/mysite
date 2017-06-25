@@ -5,8 +5,8 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-        url(r'^(?P<imgname>image/[^/]+)/$', views.getImage,name='imgname'),
-        url(r'^(?P<codefile>code/.+)/$', views.getCode,name='codefile'),
+        url(r'^(?P<imgname>image/[^/]+)$', views.getImage,name='imgname'),
+        url(r'^(?P<codefile>code/.+)$', views.getCode,name='codefile'),
         url(r'^(?P<filename>[^/]+)/$', views.article, name='article'),
         url(r'^comment/get/([^/]+)/$', views.getComment, name='get comment'),
         url(r'^comment/add$',views.addComment),
