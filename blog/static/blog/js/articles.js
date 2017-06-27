@@ -32,7 +32,7 @@ $(function(){
 			var date=new Date(data.comment[index].datetime);
 			commentContent+=monthNames[date.getMonth()];
 			commentContent+=" ";
-			commentContent+=date.getDay();
+			commentContent+=date.getDate();
 			commentContent+=" '";
 			commentContent+=date.getFullYear().toString().substr(2,2);
 			commentContent+=" at ";

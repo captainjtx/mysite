@@ -45,7 +45,7 @@ $(function(){
 			content+='<p class="excerpt-time">';
 			content+=monthNames[date.getMonth()];
 			content+=" ";
-			content+=date.getDay();
+			content+=date.getDate();
 			content+=" '";
 			content+=date.getFullYear().toString().substr(2,2);
 			content+=" at ";
