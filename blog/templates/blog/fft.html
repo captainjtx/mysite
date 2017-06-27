@@ -5,12 +5,12 @@
 <p class="blog-post-meta">Jun 19, 2017 by <a href="#">TJ</a></p>
 <h2 id="section-introduction">Introduction</h2>
 <p>
-This article mainly focus on the famous fast discrete Fourier transform (<strong>DFT</strong>) algorithm, a.k.a fast Fourier transform (<strong>FFT</strong>). It is a fundamental technique for spectrum analysis in many fields such as digital signal processing (DSP), image processing and so on. In addition to the recursive and iterative (butterfly) implementation, I also attempted multithreaded version, although the parallel solution is not unique. C++ codes are provided in the article and can also be downloaded from <a href=””>here</a>.
+This article mainly focus on the well-known fast discrete Fourier transform (<strong>DFT</strong>) algorithm, a.k.a fast Fourier transform (<strong>FFT</strong>) with time complexity of \(O(n\log n)\). It is a fundamental technique for spectrum analysis in many fields such as digital signal processing (DSP), image processing and so on. First, the divide-and-conquer idea of FFT is explored mathematically. After that, both recursive and iterative versions of FFT were implemented and explained. Finally, application of FFT on convolution is briefly discussed.  
 </p>
 <hr>
 <h2 id="section-dft">Discrete Fourier Transform (DFT)</h2>
 <p>
-Discrete Fourier transform is a way of transforming discrete signal from time domain to frequency domain. The idea is to represent the original signal by the sum of a series of scaled and shifted periodic signals. These periodic signals are specifically designed basis functions which are the polynomials of Nth complex roots of unity: 
+Discrete Fourier transform is a way of transforming discrete signal from time domain to frequency domain. The idea is to represent the original finite discrete signal by the sum of a series of scaled and shifted periodic finite and discrete signals. These periodic signals are specifically designed basis functions which are the polynomials of Nth complex roots of unity: 
 $$[1, e^{j2\pi 1/N}, e ^{j2\pi 2/N} ,\dots , e^{j2\pi (N-1)/N}]$$
 where N is the length of the signal and each basis takes the following form:
 $$[1, e^{j2\pi k/N}, e^{j2\pi 2k/N} ,\dots , e^{j2\pi (N-1)k/N} ], \quad k=[0, 1, 2, \dots , N-1]$$
@@ -52,28 +52,100 @@ The constant scale factor N is defined in inverse DFT as : \(x=\mathscr{F}^{-1}(
 
 <h2 id="section-divide">Divide and Conquer</h2>
 <p>
-An immediate optimization that come up is to use the symmetry property of DFT. It can be easily proven that \(X[k]=X^*[N-k]\). So, instead of computing the whole sequence of \(X\), one can compute the first half and deduce the other half by taking conjugate. This saves about half of the time. How can we do better ? Assuming N is power of 2: \(N=2^n\) (I will explain why later), we divide the DFT computation on original array into even (\(x_{even}=\{x[0], x[2], x[4], \dots, x[N-2]\}\)) and odd (\(x_{odd}=\{x[1], x[3], \dots, x[N-1]\}\)) indexed subarrays ! Based on \(w_N^{-2k}=e^{-j2\pi 2k/N}=e^{-j2\pi k/(N/2)}=w_{N/2}^{-k}\), for \(0\le k \le N/2-1\), we have:
+An immediate optimization that come up is to use the conjugate symmetric property of DFT. It can be easily proven that \(X[k]=X^*[N-k]\). So, instead of computing the whole sequence of \(X\), one can compute the first half and deduce the other half by taking conjugate. This saves about half of the time. How can we do better ? Assuming N is power of 2: \(N=2^n\) (I will explain why later), we divide the DFT computation on original array into even (\(x_{even}=\{x[0], x[2], x[4], \dots, x[N-2]\}\)) and odd (\(x_{odd}=\{x[1], x[3], \dots, x[N-1]\}\)) indexed subarrays ! Based on \(w_N^{-2k}=e^{-j2\pi 2k/N}=e^{-j2\pi k/(N/2)}=w_{N/2}^{-k}\), for \(0\le k \le N/2-1\), we have:
 $$
 \begin{equation}
 \begin{split}
-X[k]=\sum_{m=0}^{N-1}x[m]w_N^{-mk} & =\sum_{m_0=0}^{N/2-1}x[2m_0]w_N^{-2m_0k}+\sum_{m_1=0}^{N/2-1}x[2m_1+1]w_N^{-(2m_1+1)k}\\
-& =\underbrace{\sum_{m_0=0}^{N/2-1}x[2m_0]w_{N/2}^{-m_0k}}_\text{even}+w_{N/2}^{-1}\underbrace{\sum_{m_1=0}^{N/2-1}x[2m_1+1]w_{N/2}^{-m_1k}}_\text{odd}\\
+X[k]=\sum_{m=0}^{N-1}x[m]w_N^{-mk} & =\sum_{m_0=0}^{\frac{N}{2}-1}x[2m_0]w_N^{-2m_0k}+\sum_{m_1=0}^{\frac{N}{2}-1}x[2m_1+1]w_N^{-(2m_1+1)k}\\
+& =\underbrace{\sum_{m_0=0}^{\frac{N}{2}-1}x[2m_0]w_{\frac{N}{2}}^{-m_0k}}_\text{even}+w_{N}^{-k}\underbrace{\sum_{m_1=0}^{\frac{N}{2}-1}x[2m_1+1]w_{\frac{N}{2}}^{-m_1k}}_\text{odd}\\
 \end{split}
 \end{equation}
 $$
-It turns out that the 'even' component in the above equation is actually the \(k^{th}\) element of \(\mathscr{F}(x_{even})\), while the 'odd' component is the \(k^{th}\) element of \(\mathscr{F}(x_{odd})\). We can perform DFT on two subarrays of size N/2 and use the results to compute the original DFT from X[0] to X[N/2-1] according to the above equation. For \(N/2\le x\le N-1\)), we simply use the symmetry property of DFT. Therefore, there are only N/2 multiplications and additions to be performed in the first recursion if we had the DFT results on the subarrays. This is the main idea of <strong>FFT</strong> which is a typical divide-and-conquer approach. The running time of FFT can be derived as \(T(N)=2T(N/2)+O(N)=N\log N\). Since N is power of 2, the dividing process is guaranteed to be legal in each recursion. In the naive case of only one element, DFT is simply the element itself: \(\mathscr{F}(x[k])=x[k]\).
+It turns out that the 'even' component in the above equation is actually the \(k^{th}\) element of \(\mathscr{F}(x_{even})\), while the 'odd' component is the \(k^{th}\) element of \(\mathscr{F}(x_{odd})\). We can perform DFT on two subarrays of size N/2 and use the results to compute the original DFT from X[0] to X[N/2-1] according to the above equation. For \(N/2+1\le k\le N-1\), we can use the conjugate symmetric property of DFT. However, we would need to take care of the edge case where k=N/2 separately and also this property only applies to real-valued signal. A more general and clean way is:
+$$
+\begin{equation}
+\begin{split}
+X[k+\frac{N}{2}]=\sum_{m=0}^{N-1}x[m]w_N^{-m(k+\frac{N}{2})} & =\sum_{m_0=0}^{\frac{N}{2}-1}x[2m_0]w_N^{-2m_0(k+\frac{N}{2})}+\sum_{m_1=0}^{\frac{N}{2}-1}x[2m_1+1]w_N^{-(2m_1+1)(k+\frac{N}{2})}\\
+& =\underbrace{\sum_{m_0=0}^{\frac{N}{2}-1}x[2m_0]w_{\frac{N}{2}}^{-m_0k}}_\text{even}-w_{N}^{-k}\underbrace{\sum_{m_1=0}^{\frac{N}{2}-1}x[2m_1+1]w_{\frac{N}{2}}^{-m_1k}}_\text{odd}\\
+\end{split}
+\end{equation}
+$$
+There are only O(N) multiplications and additions to be performed in the first recursion once we had the DFT results on the subarrays.  This follows a typical divide-and-conquer approach. The running time of FFT can be derived as \(T(N)=2T(N/2)+O(N)=N\log N\). Since N is power of 2, the dividing process is guaranteed to be legal in each recursion which is why we assume N to be power of 2 at the beginning. In the naive case of only one element, DFT is simply itself: \(\mathscr{F}(x[k])=x[k]\).
 </p>
 
 <h2 id="section-padding">Zero Padding</h2>
-<p>What if N is not exact power of 2 ?</p>
-<h2 id="section-scale">Constant Scale Factor N</h2>
 <p>
-As mentioned <a href="#scale-note">earlier</a>, one really should scale DFT and inverse DFT equally by \(\sqrt{N}\), i.e. \(\mathscr{F}(x)=V^*x/\sqrt{N}\) and \(\mathscr{F}^{-1}(X)=Vx/\sqrt{N}\) to obtain power conservation during DFT:    
-$$\sum_{k=1}^{N-1}|x[k]|^2=\sum_{k=1}^{N-1}|X[k]|^2$$
+What if N is not exact power of 2 ? We can simply append zeros it becomes power of 2 ! You might have known that the longer the signal is the higher the frequency resolution we obtain from DFT and this also applies to zero-padding. For example, if we append N zeros to the orignal signal, we increase the frequency resolution from Fs/N to Fs/2N Hz where Fs is sampling rate. This is quite counterintuitive. It looks like that by simply appending zeros to the signal we can gain more information in its spectrum. The truth is, we gained nothing. A rigorous explannation can be found <a href="https://www.control.isy.liu.se/student/tsrt78/zeropadding.pdf">here</a>. In short, by padding zeros, we simply move the assumption of the signal out of boundary from periodic to truncated. You may also think of zero-padding as a special kind of 'interpolation' which makes the spectrum only looks 'smoother'.
 </p>
 
+<h3>recursive_fft.cpp</h3>
+<div class="code-block" id="user-src-1"></div>
+<div class="output-block" id="output-1"></div>
+<p class='note'> 
+Line 36-38 of the above code is called butterfly operation in FFT.
+</p>
+<h2 id="section-scale">Constant Scale Factor N</h2>
+<p>
+As mentioned <a href="#scale-note">earlier</a>, one should scale DFT and inverse DFT equally by \(\sqrt{N}\), i.e. \(\mathscr{F}(x)=V^*x/\sqrt{N}\) and \(\mathscr{F}^{-1}(X)=Vx/\sqrt{N}\) to conserve power:    
+$$\sum_{k=1}^{N-1}|x[k]|^2=\sum_{k=1}^{N-1}|X[k]|^2$$
+However, a more common case might be, given a cosine wave of frequency 1 Hz sampled at 100 Hz, i.e. \(x[k]=Acos(2\pi k/100)\), we want the DFT to reflect the amplitude A. The cosine wave can be rewritten as:
+$$
+\begin{equation}
+\begin{split}
+x[k] & =\frac{A}{2}e^{j2\pi k/100}+\frac{A}{2}e^{-j2\pi k/100}\\
+& = \frac{AN/2}{N}e^{j2\pi k/100}+\frac{AN/2}{N}e^{-j2\pi k/100}\\
+\end{split}
+\end{equation}
+$$
+which is exactly the inverse DFT with:
+$$
+X[k]=
+\begin{cases}
+\frac{AN}{2},\quad  k=[1,-1]\\
+0, \quad otherwise
+\end{cases}
+$$
+Thus, in order to obtain amplitude from DFT, we have to divide the DFT coefficient X[k] by N/2. This practice is often seen in DSP analysis.  
+</p>
+<hr>
+<h2 id="section-butterfly">Iterative FFT</h2>
+<p>
+The previous <a href="#user-src-1">recursive implementation of FFT</a> is usually not efficient due to recusion overhead. To implement FFT in a iterative way, one has to figure out the computation of FFT butterfly operation from bottom up. 
+</p>
+<p>
+When we think of dividing the array by even and odd index at the first recursion level, we can merely check the least significant bit, i.e. 0:even, 1:odd. On the second recursion level, we simply check the second bit. Third recursion, third bit and so on. Generally, we check only kth bit at kth recursion level. This process is actually analogous to comparing binary numbers in a <strong>bit-reversed</strong> manner. Thus, the bottom level of recursion is simply the result of this 'bit-reversed' comparison. The following figure illustrated a simple example of FFT recusion tree with N=8.   
+</p>
+<p>
+<figure>
+	<p><img id="img-recursion-tree" class="center"></p>
+	<figcaption>
+	<strong>Fig 1. </strong> The recursion tree of iterative FFT on x (N=8). The index of each sample is written on top of itself. At each recursion level, depending on the recursion bit (colored in blue or red), the original signal is splitted up into even (blue) and odd (red) indexed subarrays. The final orderings (bottom) of the array are simply the <strong>bit reversals</strong> of ascending indices from 0 to 7. 
+	</figcaption> 
+</figure>
+<br>
+</p>
+<h3>iterative_fft.cpp</h3>
+<div class="code-block" id="user-src-2"></div>
+<div class="output-block" id="output-2"></div>
+<hr>
+<h2 id="section-fast-convolution">Fast Convolution</h2>
+<p>
+Given two signals: x[k] with length n and y[k] with length m. Assume n&gt;m,  the convolution is defined as:
+$$
+z[k]=\sum_{d=0}^{k}x[d]y[k-d], \quad k=0,1,2,\dots,n+m-1 
+$$
+The time complexity is O(nm) by direct approach. However, by leveraging FFT, we can do much better. It is known that convolution in time domain is multiplications in frequency domain(<a href="https://en.wikipedia.org/wiki/Convolution_theorem" target="_blank">convolution theorem</a>), i.e. 
+$$
+\mathscr{F}\{x*y\}=\mathscr{F}\{x\}\cdot \mathscr{F}\{y\}
+$$
+Thus, we can transform the time domain convolution to frequency domain multiplication as below:  
+$$
+z=\mathscr{F}^{-1}\{\mathscr{F}\{x\}\cdot \mathscr{F}\{y\}\}
+$$
+ The fast convolution takes \(O(2n\log n)\)+\(O(2m\log m)\) time on fft and ifft computations. The frequency domaint multiplications take additional \(O(\max(n,m))\) time. However, the total time combined is still asymptotically lower than direct computation. 
+</p>
 {% endblock %}
 {% block articlejs %}
-<script src="{% static "blog/js/data-structure.js" %}"></script>
-<link href="{% static "blog/css/data-structure.css" %}" rel="stylesheet">
+<script src="{% static "blog/js/fft.js" %}"></script>
+<link href="{% static "blog/css/fft.css" %}" rel="stylesheet">
 {% endblock %}

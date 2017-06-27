@@ -6,39 +6,58 @@
 using namespace std;
 #define PI 3.14159265
 
+size_t bit_reverse_increment(size_t num, size_t N)
+{
+	//amortized run time is O(N) since the while loop does not 
+	//always loop through log(N) bits 
+	N>>=1;
+	while(num&N){
+		num^=N;
+		N>>=1;
+	}
+	num^=N;
+	return num;
+}
+
+template<typename Type>
+void bit_reverse_copy(const vector<Type>& source, vector<Type>& target)
+{
+	//assume N is power of 2
+	size_t N=source.size();
+	size_t rev=0;
+	for(int i=0;i<N;++i)
+	{
+		target[rev]=source[i];
+		rev=bit_reverse_increment(rev,N);
+	}
+}
+
 vector<complex<double> > helper(const vector<complex<double> >& signal, const int sig)
 {
-	size_t len=signal.size();
-	if(len==1)
-		return signal;
-	vector<complex<double> > odd(len>>1);
-	vector<complex<double> > even(len>>1);
-	for(size_t i=0;i<len;++i)
+	size_t N=signal.size();
+	vector<complex<double> > dft_signal(N);
+	bit_reverse_copy<complex<double> >(signal, dft_signal);
+
+	int seg=1;
+	while(seg<=N)
 	{
-		if(i%2)
-			odd[(i-1)>>1]=signal[i];
-		else
-			even[i>>1]=signal[i];
+		auto w=complex<double>(cos(2*PI/seg),sig*sin(2*PI/seg));
+		for(int i=0;i<N;i+=seg)
+		{
+			complex<double> wk(1,0);
+			for(int j=0;j<seg/2;++j)
+			{
+				auto tmp=wk*dft_signal[i+j+seg/2];// save a temporary variable to avoid recomputing 
+				auto v=dft_signal[i+j];
+				dft_signal[i+j]+=tmp; //butterfly computation
+				dft_signal[i+j+seg/2]=v-tmp;
+				wk*=w;
+			}
+		}
+		seg<<=1;
 	}
 
-	//divide and conquer
-	vector<complex<double> > dft_odd=helper(odd,sig);
-	vector<complex<double> > dft_even=helper(even,sig);
-
-	//merge
-	vector<complex<double> > dft_all(len,0);
-	complex<double> w;
-	w=complex<double>(cos(2*PI/len),sig*sin(2*PI/len));
-	complex<double >wk(1,0);
-	
-	for(int i=0;i<len/2;++i)
-	{
-		auto tmp=wk*dft_odd[i];// save a temporary variable to avoid recomputing 
-		dft_all[i]=dft_even[i]+tmp;// key operations
-		dft_all[i+len/2]=dft_even[i]-tmp; 
-		wk*=w;
-	}
-	return dft_all;
+	return dft_signal;
 }
 
 vector<complex<double> > zero_padding(vector<complex<double> > signal)
