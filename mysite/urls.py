@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls')),
     url(r'^home/$',blog.views.home),
     url(r'^cv/$',blog.views.getCV),
+    url(r'^bib/$',blog.views.getBib),
     url(r'^about/$',blog.views.about),
     url(r'^(?P<imgname>image/[^/]+)/$', views.getImage,name='imgname'),
     url(r'^$',blog.views.home),

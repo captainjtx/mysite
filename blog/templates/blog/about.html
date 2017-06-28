@@ -1,0 +1,27 @@
+{% extends "blog/template.html" %}
+{% load static %}
+{% block mainbody %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-8 blog-main">
+			<p class='center' id="myself">
+			My name is Tianxiao Jiang. I have a broad interest in algorithms, machine learning, clustering, digital signal processing and statistics. I am also a software developer interested in system and web programming. Check out my profiles: <a href="http://www.linkedin.com/in/tianxiao-jiang-2bb85792">LinkedIn</a>, <a href="https://github.com/captainjtx">Github</a>, <a href="https://bitbucket.org/TengiJohn/">BitBucket</a> and my interesting projects such as <a href="http://www.always-a-programmer.com">always-a-programmer.com</a> and <a href="http://www.cnelab.org">cnelab.org </a>. Here is my <a href="/cv">CV</a>. 
+			</p>
+			<h2>My Publications</h2>
+			<table id="mypub" class="display"></table>
+		</div>
+		<div class="col-md-2">
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block articlejs %}
+<link rel="stylesheet" href="{% static "bib-publication-list/bib-publication-list.css" %}">
+<script src="{% static "bib-publication-list/build/bib-list-min.js" %}"></script>
+<script src="{% static "js/github-stars/github-stars.js" %}"></script>
+<script src="{% static "blog/js/about.js" %}"></script>
+<link href="{% static "blog/css/about.css" %}" rel="stylesheet">
+{% endblock %}

@@ -111,7 +111,7 @@ def home(request):
     return render(request,'blog/home.html')
 
 def about(request):
-    return render(request,'blog/home.html')
+    return render(request,'blog/about.html')
 # Create your views here.
 def getImage(request,imgname):
     extension=os.path.splitext(imgname)[1]
@@ -144,14 +144,28 @@ def getCV(request):
         content=f.read();
         return HttpResponse(content,content_type='application/pdf')
     except IOError:
-        #try:
-        #    with open('blog/'+static('blog/cv/cv.pdf')) as f:
-        #        return HttpResponse(f.read(), content_type='application/pdf')
-        #except IOError:
-        #    for url in settings.STATICFILES_DIRS:
-        #        try:
-        #            with open(url+'/cv/cv.pdf') as f:
-        #                return HttpResponse(f.read(), content_type='application/pdf')
-        #        except IOError:
-        #            continue
-        raise Http404('"cv.pdf" does not exist')
+        try:
+            for url in settings.STATICFILES_DIRS:
+                try:
+                    with open(url+'/cv/cv.pdf') as f:
+                        return HttpResponse(f.read(), content_type='application/pdf')
+                except IOError:
+                    continue
+        except IOError:
+            raise Http404('"cv.pdf" does not exist')
+
+def getBib(request):
+    try:
+        f=staticfiles_storage.open('bib/mypub.bib');
+        content=f.read();
+        return HttpResponse(content,content_type='text/plain')
+    except IOError:
+        try:
+            for url in settings.STATICFILES_DIRS:
+                try:
+                    with open(url+'/bib/mypub.bib') as f:
+                        return HttpResponse(f.read(), content_type='text/plain')
+                except IOError:
+                    continue
+        except IOError:
+            raise Http404('"mypub.tex" does not exist')
