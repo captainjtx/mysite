@@ -1,7 +1,7 @@
 {% extends "blog/article.html" %}
 {% load static %}
 {% block content %}
-<h2 class="blog-post-title">Fast Fourier Transform (FFT)</h2>
+<h1 class="blog-post-title">Fast Fourier Transform (FFT)</h1>
 <p class="blog-post-meta">Jun 19, 2017 by <a href="#">TJ</a></p>
 <h2 id="section-introduction">Introduction</h2>
 <p>
@@ -78,13 +78,13 @@ There are only O(N) multiplications and additions to be performed in the first r
 What if N is not exact power of 2 ? We can simply append zeros it becomes power of 2 ! You might have known that the longer the signal is the higher the frequency resolution we obtain from DFT and this also applies to zero-padding. For example, if we append N zeros to the orignal signal, we increase the frequency resolution from Fs/N to Fs/2N Hz where Fs is sampling rate. This is quite counterintuitive. It looks like that by simply appending zeros to the signal we can gain more information in its spectrum. The truth is, we gained nothing. A rigorous explannation can be found <a href="https://www.control.isy.liu.se/student/tsrt78/zeropadding.pdf">here</a>. In short, by padding zeros, we simply move the assumption of the signal out of boundary from periodic to truncated. You may also think of zero-padding as a special kind of 'interpolation' which makes the spectrum only looks 'smoother'.
 </p>
 
-<h3>recursive_fft.cpp</h3>
+<h3 id='section-recursive-fft-cpp'>recursive_fft.cpp</h3>
 <div class="code-block" id="user-src-1"></div>
 <div class="output-block" id="output-1"></div>
 <p class='note'> 
 Line 36-38 of the above code is called butterfly operation in FFT.
 </p>
-<h2 id="section-scale">Constant Scale Factor N</h2>
+<h2 id="section-scale">Constant Factor N</h2>
 <p>
 As mentioned <a href="#scale-note">earlier</a>, one should scale DFT and inverse DFT equally by \(\sqrt{N}\), i.e. \(\mathscr{F}(x)=V^*x/\sqrt{N}\) and \(\mathscr{F}^{-1}(X)=Vx/\sqrt{N}\) to conserve power:    
 $$\sum_{k=1}^{N-1}|x[k]|^2=\sum_{k=1}^{N-1}|X[k]|^2$$
@@ -124,13 +124,13 @@ When we think of dividing the array by even and odd index at the first recursion
 </figure>
 <br>
 </p>
-<h3>iterative_fft.cpp</h3>
+<h3 id='section-iterative-fft-cpp'>iterative_fft.cpp</h3>
 <div class="code-block" id="user-src-2"></div>
 <div class="output-block" id="output-2"></div>
 <hr>
 <h2 id="section-fast-convolution">Fast Convolution</h2>
 <p>
-Given two signals: x[k] with length n and y[k] with length m. Assume n&gt;m,  the convolution is defined as:
+One of the potential applications of FFT aside from frequency analysis is speeding up <a href='https://en.wikipedia.org/wiki/Convolution' target='_blank'>convolution</a> computations. Given two signals: x[k] with length n and y[k] with length m. Assume n&gt;m,  the convolution is defined as:
 $$
 z[k]=\sum_{d=0}^{k}x[d]y[k-d], \quad k=0,1,2,\dots,n+m-1 
 $$

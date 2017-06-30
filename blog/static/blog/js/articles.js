@@ -51,10 +51,52 @@ $(function(){
 		$('#btn-star-count div').html(stars);
 	});
 	$("p.note").prepend("<strong>Note: </strong>");
+	var tags=$("h2,h3");
+	var sidebar='<nav class="bs-docs-sidebar hidden-sm hidden-xs">';
+	sidebar+='<ul class="nav nav-stacked" data-spy="affix" data-offset-top="175" id="nav-sidebar">';
+	sidebar+='<p>In this article</p>';
+	for (var i=0; i<tags.length; ++i)
+	{
+		if(tags[i].nodeName=='H2')
+		{
+			sidebar+='<li><a href="#';
+			sidebar+=tags.eq(i).attr('id');
+			sidebar+='">';
+			sidebar+=tags.eq(i).html();
+			sidebar+='</a>';
+
+			if(i==tags.length-1||tags[i+1].nodeName=='H2')
+			{
+				sidebar+='</li>'
+			}
+		}
+		else if(tags[i].nodeName=='H3')
+		{
+			if(i>0&&tags[i-1].nodeName=='H2')
+			{
+				sidebar+='<ul class="nav nav-stacked">';
+			}
+
+			sidebar+='<li><a href="#';
+			sidebar+=tags.eq(i).attr('id');
+			sidebar+='">';
+			sidebar+=tags.eq(i).html();
+			sidebar+='</a></li>';
+			if(i==tags.length-1||tags[i+1].nodeName=='H2')
+			{
+				sidebar+='</ul></li>';
+			}
+		}
+	}
+	sidebar+='<a class="btn btn-default" id="btn-github-star" href="https://github.com/captainjtx/codingground" target="_blank">';
+	sidebar+='<svg height="16" width="16">';
+	sidebar+='<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>';
+	sidebar+='</svg><div>Star</div><a class="btn btn-default" id="btn-star-count"><div>0</div></a></a></ul></nav>';
+	$('#right-sidebar').html(sidebar);
 });
 
 $('body').scrollspy({ 
-		target: '.bs-docs-sidebar',
-		offset: 40
-	});
+	target: '.bs-docs-sidebar',
+	offset: 40
+});
 //var codeURL="https://raw.githubusercontent.com/captainjtx/freecoder/master/DataStructures/";

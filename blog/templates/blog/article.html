@@ -50,7 +50,7 @@
 			</div>
 			<div class="horizontal-line"><hr></div>
 			{% verbatim %}
-			<h3>Your comment :</h3> 
+			<h2 id='section-comments'>Comments</h2> 
 			<div id='comment-box' ng-app='commentBox' class='container-fluid'>
 				<div class="row">
 					<form ng-controller="FrmController" name="commentForm">
@@ -82,9 +82,8 @@
 			</div>
 			{% endverbatim %}
 		</div><!-- /.blog-main -->
-		<nav class="col-md-2 bs-docs-sidebar hidden-sm hidden-xs"> 
-			{% block sidebar %}{% endblock %}
-		</nav>
+
+		<div id="right-sidebar" class="col-md-2"></div>
 	</div><!-- /.row -->
 </div><!-- /.container -->
 {% endblock %}

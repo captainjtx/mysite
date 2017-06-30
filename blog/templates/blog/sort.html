@@ -1,16 +1,11 @@
 {% extends "blog/article.html" %}
 {% load static %}
 {% block content %}
-<h2 class="blog-post-title">Basic Sorting Algorithms</h2>
+<h1 class="blog-post-title">Basic Sorting Algorithms</h1>
 <p class="blog-post-meta">September 23, 2016 by <a href="#">TJ</a></p>
-<h2 id="section-motivation">Motivation</h2>
-<p>
-The general idea and structure of this article come from the <a href="https://mitpress.mit.edu/books/introduction-algorithms">textbook</a>. For each algorithm, a C++ implementation is provided with explanations in the comments.
-</p>
-<hr>
 <h2 id="section-introduction">Introduction</h2>
 <p>
-Sorting problem is the most fundamental problem in either algorithm study or real-world applications. Many concepts of <strong>algorithm design</strong> can be reflected in different implementations of sorting algorithm. 
+Sorting problem is the most fundamental problem in either algorithm study or real-world applications. Many concepts of <strong>algorithm design</strong> can be reflected in different implementations of sorting algorithm. The general idea and structure of this article come from the <a href="https://mitpress.mit.edu/books/introduction-algorithms">textbook</a>. For each algorithm, a C++ implementation is provided with explanations in the comments.
 </p>
 <p>Before jumping into a real algorithm, it is better to clarify some concepts. <strong>Stable</strong> sorting means that the original order of equal elements is maintained. The <strong>time complexity</strong> means the runing time of the algorithm in asymptotic way. <strong>Space complexity</strong> means the additional space needed to store intermediate variables needed by the algorithm. In terms of complexity analysis, constant factor is discarded for simplicity as it does not affect the aymptotic result.</p>
 <hr>
@@ -24,7 +19,7 @@ Sorting problem is the most fundamental problem in either algorithm study or rea
 </figure>
 <br>
 <p>Here is the C++ implementation using template:</p>
-<h3>C++ Code</h3>
+<h3 id='section-insertion-cpp'>insertSort.cpp</h3>
 <div class="code-block" id="user-src-1"></div>
 <div class="output-block" id="output-1"></div>
 <p>The worst and average case of insertion sort time complexity is \(O(n^2)\). As it is in-place sort, auxiliary space used is \(O(1)\).</p>
@@ -62,7 +57,7 @@ The <strong>combine</strong> step of mergesort can be easily achieved:
 	<li>Repeat step 2 until one of the subarray is empty. Then, concatenate the remaining subarray to the output array</li>
 </ol>
 </p>
-<h3>C++ Code</h3>
+<h3 id='section-merge-sort-cpp'>mergeSort.cpp</h3>
 <div class="code-block" id="user-src-2"></div>
 <div class="output-block" id="output-2"></div>
 <p>Since <strong>divide</strong> split the array in half in all cases, the deepth of recursion will be \(\log n\) and the running time of each recursion level is \(O(n)\), the overall running time of mergesort is always \(O(n\log n)\). The auxiliary space complexity is \(O(n)\), quite lage compared to quicksort's \(O(\log n)\).</p>
@@ -87,7 +82,7 @@ The <strong>combine</strong> step of mergesort can be easily achieved:
 </figure>
 <br>
 <p>In the example above, 8 (<code>A[5]</code>) is randomly selected as a pivot value and moved to the end of array for the convenience of iteration. Iteration step is represented by <code>j</code>. The first recursion level partition starts with <code>j=0</code>. Iteration keeps going until it finds a value that is smaller than the pivot value. For example, when <code>j=4</code>, it finds out that <code>A[4]</code> (5) is less than the pivot (8), thus switch 5 with <code>A[i+1]=16</code>. This process is repeated util the end of array. The final step switch the pivot value back to the end of left subarray (<code>i+1=6</code>). By doing this, all elements on the left side of pivot are smaller than it while the right side elements are larger than pivot. On each subarray (left and right), partition recursively is executed by quicksort until the subarray is either empty or has only one element.</p>
-<h3>C++ Code</h3>
+<h3 id='section-quick-sort-cpp'>quickSort.cpp</h3>
 <div class="code-block" id="user-src-3"></div>
 <div class="output-block" id="output-3"></div>
 <ul>
@@ -134,7 +129,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 <h3 id="section-iterative-max-heapify">Step 2: Iterative Max-Heapify</h3>
 <p>After building the input into a max-heap, the largest element will be the root element. To find the second largest one, we can switch the root element to the tail. Since the tail is now 'sorted', we can truncate The binary tree by simply decreasing the <code>heap-size</code> by one. By running max-heapify on the new tree, the second largest element can be obtained at the top. The process is interated until <code>heap-size</code> decreased to 1.</p>
 <p>The time complexity of heapsort is n-1 times call of max-heapify (\(O(h)\)) plus the running time of build-max-heap (\(O(n)\)), which is upper bounded by \(O(n\log n)\). The fundamental subroutine of heapsort is max-heapify, which is also an in-place operation. The space complexity of heapsort is, therefore, \(O(1)\).</p>
-<h3>C++ Code</h3>
+<h3 id='section-heap-sort-cpp'>heapSort.cpp</h3>
 <div class="code-block" id="user-src-4"></div>
 <div class="output-block" id="output-4"></div>
 <p class="note">The example code of max-heapify here uses <a href="https://en.wikipedia.org/wiki/Tail_call" target="_blank">tail-recursion</a>. Generally it can be optimized automatically to its equivalent loop call, which consumes constant stack space. However, even if it is not optimized, the stack space used would be \(O(\log n)\), which in practice, is not bad at all.</p> 
@@ -150,7 +145,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 <h2 id="section-counting-sort">Counting Sort</h2>
 <p><strong>Counting sort</strong> runs in \(O(n)\), assuming the input elements are integers within an already known range. It breaks the limination of comparison sort by indexing the element directly at its own value.</p>
 <p>Imagining an input of <code>A=[3 1 5 4 6 2]</code>, each element is drawn from 1 to 6, the order of 4 is exactly 4 because each possible element before it (e.g. 1 2 3) appears and only appears once in A. By counting how many elements are smaller than an element, we can immediately obtain its correct position. To do this, an auxiliary array <code>B</code> of size <code>K</code> is needed, where K is the maximum value of the input. Initially B is set to zeros. Each time an element appears, for example A[i], B records its appearing times in the array by executing B[A[i]]=B[A[i]]+1. After that, B is transformed to its cumulative summation by executing B[j]=B[j]+B[j-1] at each step. The new B[j] represents the number of elements are larger or equal to <code>j</code> in the original array. We can now position the element A[i] by A.length-B[A[i]] and update B[A[i]] with B[A[i]]-1 iteratively from tail to head to make it stable.</p>
-<h3>C++ Code</h3>
+<h3 id='section-counting-sort-cpp'>countSort.cpp</h3>
 <div class="code-block" id="user-src-5"></div>
 <div class="output-block" id="output-5"></div>
 <p>Counting sort is a stable sort and runs extremly fast. However, it is only suitable for 'small' precision numbers. The intermediate array of B will be too expensive to open if K (maximum possible value) is much larger compared to n (array size). An extreme example can be A=[1 9999999]. In this case, although there are only two elements in the array, the size of B has to be at least 9999999. Generally, the space complexity of counting sort is \(O(n+K)\).</p>
@@ -175,7 +170,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 	<li>If \(b \geq \log n\), choose \(r=\log n\).</li>
 </ul>
 <p>In the first case of the above critera, radix sort degrades to counting sort. A big advantage of radix sort over direct counting sort, I think, is that it uses less auxiliary space at each time if r is small enough. For example, given an input array of size 1000 with max number 10000, instead of using <code>B.length=10000</code> in counting sort, only <code>B.length=256</code> is needed in radix sort if you group one byte each time as a bin (r=8 bits). In practice, if space is a concern, an upper limit on r might be a necessary trade off between space and time.</p>
-<h3>C++ Code</h3>
+<h3 id='section-radix-sort-cpp'>radixSort.cpp</h3>
 <div class="code-block" id="user-src-6"></div>
 <div class="output-block" id="output-6"></div>
 <p class="note">The above example reuses the previous <a href="code-count-sort" class="inline-link">counting sort</a> code.</p>
@@ -192,7 +187,7 @@ This float-down procedure at each step can be generalized and is called <strong>
 <br>
 <p>In practice, as long as the sum of the square of bin size is linear, the running time will remain linear even if the input is not uniformly distributed. Like counting sort, the space complexity of bucket sort is also \(O(n)\).</p>
 <br>
-<h3>C++ Code</h3>
+<h3 id='section-bucket-sort-cpp'>bucketSort.cpp</h3>
 <div class="code-block" id="user-src-7"></div>
 <div class="output-block" id="output-7"></div>
 <hr>
@@ -274,69 +269,6 @@ This float-down procedure at each step can be generalized and is called <strong>
 <p>Testing results are based on Mac Pro, 2.4 GHz Intel Core i5 processor. C++ compiler used is Apple LLVM version 7.3.0 (g++). </p>
 {% endblock %}
 
-{% block sidebar %}
-<ul class="nav nav-stacked" data-spy="affix" data-offset-top="175" id="nav-sidebar">
-	<p>In this article</p>
-	<li><a href="#section-motivation">Motivation</a></li>
-	<li><a href="#section-introduction">Introduction</a></li>
-	<li>
-		<a href="#section-insert-sort">Insertion Sort</a>
-		<ul class="nav nav-stacked">
-			<li><a href="#user-src-1">C++ Code</a></li>
-		</ul>
-	</li>
-	<li><a href="#section-divide-conquer">Divide Conquer and Combine</a></li>
-	<li>
-		<a href="#section-merge-sort">Merge Sort</a>
-		<ul class="nav nav-stacked">
-			<li><a href="#user-src-2">C++ Code</a></li>
-		</ul>
-	</li>
-	<li>
-		<a href="#section-quick-sort">Quick Sort</a>
-		<ul class="nav nav-stacked">
-			<li><a href="#user-src-3">C++ Code</a></li>
-		</ul>
-	</li>
-	<li>
-		<a href="#section-heap-sort">Heap Sort</a>
-		<ul class="nav nav-stacked">
-			<li><a href="#section-build-max-heap">Build a Max-Heap</a></li>
-			<li><a href="#section-iterative-max-heapify">Iterative Max-Heapify</a></li>
-			<li><a href="#user-src-4">C++ Code</a></li>
-		</ul>
-	</li>
-	<li><a href="#section-comparison-sort">Comparison Sort</a></li>
-	<li>
-		<a href="#section-counting-sort">Counting Sort</a>
-		<ul class="nav nav-stacked">
-			<li><a href="#user-src-5">C++ Code</a></li>
-		</ul>
-	</li>
-	<li>
-		<a href="#section-radix-sort">Radix Sort</a>
-		<ul class="nav nav-stacked">
-			<li><a href="#user-src-6">C++ Code</a></li>
-		</ul>
-	</li>
-	<li>
-		<a href="#section-bucket-sort">Bucket Sort</a>
-		<ul class="nav nav-stacked">
-			<li><a href="#user-src-7">C++ Code</a></li>
-		</ul>
-	</li>
-	<li><a href="#section-summary">Summary</a></li>
-	<a class="btn btn-default" id="btn-github-star" href="https://github.com/captainjtx/codingground" target="_blank">
-		<svg height="16" width="16">
-			<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-		</svg>
-		<div>Star</div>
-		<a class="btn btn-default" id="btn-star-count">
-			<div>0</div>
-		</a>
-	</a>
-</ul>
-{% endblock %}
 
 {% block articlejs %}
 <script src="{% static "blog/js/sort.js" %}"></script>

@@ -7,7 +7,6 @@
 		$('#img-build-max-heap').attr('src',src+"/../../image/build-max-heap.png");
 		$('#img-radix').attr('src',src+"/../../image/radix-sort.png");
 		$('#img-bucket').attr('src',src+"/../../image/bucket-sort.png");
-
 	});
 
 	$.when(
