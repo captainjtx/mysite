@@ -5,9 +5,10 @@ from django.utils.timezone import now
 
 class Article(models.Model):
     title=models.CharField(max_length=200,primary_key=True)
-    pub_date=models.DateTimeField('Publish date')
+    pub_date=models.DateTimeField('Publish date',auto_now_add=True)
     file=models.CharField(max_length=20,unique=True,null=True)
     excerpt=models.TextField(max_length=1000,null=True)
+    modified_date = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
     class Meta:
@@ -34,7 +35,7 @@ class Comment(models.Model):
     visitor=models.ForeignKey(Visitor,null=True)
     content=models.TextField('Comment content')
     vote=models.PositiveSmallIntegerField(default=0,blank=True)
-    pub_date=models.DateTimeField('Comment date',default=now())
+    pub_date=models.DateTimeField('Comment date',auto_now_add=True)
     def __str__(self):
         return self.visitor.name+' on '+ '"'+self.article.title+'"'
     class Meta:

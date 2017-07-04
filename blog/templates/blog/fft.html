@@ -1,8 +1,6 @@
 {% extends "blog/article.html" %}
 {% load static %}
 {% block content %}
-<h1 class="blog-post-title">Fast Fourier Transform (FFT)</h1>
-<p class="blog-post-meta">Jun 19, 2017 by <a href="#">TJ</a></p>
 <h2 id="section-introduction">Introduction</h2>
 <p>
 This article mainly focus on the well-known fast discrete Fourier transform (<strong>DFT</strong>) algorithm, a.k.a fast Fourier transform (<strong>FFT</strong>) with time complexity of \(O(n\log n)\). It is a fundamental technique for spectrum analysis in many fields such as digital signal processing (DSP), image processing and so on. First, the divide-and-conquer idea of FFT is explored mathematically. After that, both recursive and iterative versions of FFT were implemented and explained. Finally, application of FFT on convolution is briefly discussed.  

@@ -26,15 +26,28 @@ def getAllArticles(request):
     obj=json.dumps(dict,cls=DjangoJSONEncoder)
     return HttpResponse(obj)
 
-def getComment(request,title):
+def getMeta(request,filename):
+    dict={}
+    dict['filename']=filename;
+    try:
+        articleID=Article.objects.get(file=filename)
+    except Article.DoesNotExist:
+        raise Http404('Article "'+ filename +'" does not exist')
+    dict['title']=articleID.title;
+    dict['pub_date']=articleID.pub_date;
+    dict['modified_date']=articleID.modified_date;
+    obj=json.dumps(dict,cls=DjangoJSONEncoder)
+    return HttpResponse(obj)
+
+def getComment(request,filename):
     dict={}
     dict['success']=0
     info='Comment fetch success'
-    dict['title']=title
+    dict['filename']=filename
     try:
-        articleID=Article.objects.get(title=title)
+        articleID=Article.objects.get(file=filename)
     except Article.DoesNotExist:
-        raise Http404('Article "'+ title+'" does not exist')
+        raise Http404('Article "'+ filename +'" does not exist')
 
     comments=Comment.objects.filter(article=articleID)
     data=[]

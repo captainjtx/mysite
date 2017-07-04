@@ -160,16 +160,26 @@ h6, .h6 {
  * Blog posts
  */
 
-.blog-post {
+#blog-post {
 	margin-bottom: 60px;
 }
-.blog-post-title {
+#blog-post-title {
 	margin-bottom: 5px;
 	font-size: 40px;
 }
-.blog-post-meta {
+#blog-post-meta {
 	margin-bottom: 20px;
 	color: #999;
+	float: left;
+}
+#blog-post-update{
+	margin-bottom: 20px;
+	color: #428dcf;
+	font-size: 0.8em;
+	float: right;
+}
+h2{
+	clear: both;
 }
 
 

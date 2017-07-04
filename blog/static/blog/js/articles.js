@@ -18,8 +18,22 @@ function initAceEditor()
 }
 
 $(function(){
-	$.getJSON("/blog/comment/get/"+$('.blog-post-title').text(),function(data){
-		console.log(data.comment);
+
+	var article_path= window.location.pathname.split( '/' );
+	var article_id=article_path[article_path.length-2];
+
+	$.getJSON('/blog/meta/'+article_id, function (meta) {
+		$('#blog-post-title').text(meta.title);
+		var pub_date=new Date(meta.pub_date);
+		var modify_date=new Date(meta.modified_date);
+		var meta_str=monthNames[pub_date.getMonth()]+" "+pub_date.getDate()+", "+pub_date.getFullYear().toString()+ ' by Tianxiao Jiang';
+		var update_str='updated '+monthNames[modify_date.getMonth()]+" "+modify_date.getDate()+", "+modify_date.getFullYear().toString();
+		console.log(meta_str)
+		$('#blog-post-meta').text(meta_str);
+		$('#blog-post-update').text(update_str);
+	});
+
+	$.getJSON("/blog/comment/get/"+article_id,function(data){
 		var commentContent='';
 		for (var index=0; index<data.comment.length; ++index)
 		{
