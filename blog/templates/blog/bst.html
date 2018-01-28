@@ -1,0 +1,65 @@
+{% extends "blog/article.html" %}
+{% load static %}
+{% block content %}
+<h2 id="section-introduction">Introduction</h2>
+<p>
+<strong>Binary Search Tree (BST)</strong> is a binary tree structure that for any node n, each node in the left subtree is smaller than n while each node in the right subtree is larger than n (node with equal key is usually kept in a list of the node). If the BST is not too skewed, operations such as <strong>SEARCH, MIN/MAX, PREDECESSOR/SUCCESSOR, INSERT, DELETE</strong> usually take \(O(\log n)\) time on BST. <strong>Building</strong> a BST takes \(O(n\log n)\) time. As a comparison, hash table runs faster in <strong>SEARCH, INSERT, DELETE</strong> (\(O(1)\)) at the cost of slow <strong>MIN/MAX, PREDECESSOR/SUCCESSOR</strong> (\(O(n)\)) operations. Max/Min heap offers fast <strong>MIN/MAX</strong>(\(O(1)\)) and <strong>BUILD</strong> (\(O(n)\)) operations. However, updating the heap array after deleting or inserting the min/max value takes additional \(O(\log n)\) time. BST can be seen as a more "balanced" data structure that offers a decent performance in every operation. In addition, operations involved ordering statistics such as <a href="#section-traversal">ordered traversal</a>, <a href="#section-kth">get kth element</a> and <a href="#section-range-query">range query</a> can be efficiently performed in BST.  
+</p>
+<br>
+<figure>
+	<p><img id="img-bst" class="center"></p>
+	<figcaption>
+		<strong>Fig 1. </strong> An "ugly-looking" binary search tree follows the rule of <code>left &#60; middle &#60; right </code>. Unlike <a href="/sort/#img-max-heap">Max/Min heap tree</a>, bst is not necessarily balanced despite that it is a desired property to have. 
+	</figcaption> 
+</figure>
+<br>
+
+<hr>
+<h2 id="section-tree-traversal">Tree Traversal</h2>
+<p>
+Tree traversal in BST can have three ways: <strong>inorder, preorder and postorder</strong>, depending on the order to visit the parent relative to the left and right children : 
+</p>
+
+<figure>
+	<p><img id="img-tree-walk" class="center"></p>
+	<figcaption>
+		<strong>Fig 2. </strong> The visiting sequence (1st, 2nd, 3rd) of inorder, preorder and postorder tree traversal. 
+	</figcaption> 
+</figure>
+<br>
+<p>
+By the definition of binary search tree, the inorder tree traversal always visits the nodes in ascending order , i.e. smaller values on the left, middle value on root and larger values on the right.  
+</p>
+<h3 id='section-bst-walk-cpp'>bst-walk.cpp</h3>
+<div class="code-block" id="user-src-1"></div>
+<div class="output-block" id="output-1"></div>
+
+<h2 id="section-tree-query">Searching, Min/Max, Predecessor/Successor</h2>
+<p>
+Searching a value in a binary search tree can be performed recursively. The minimum of the BST is the leaf node on the left-most branch, while maximum is at the bottom of the right most branch. Finding the predececcor/successor is slightly more tricky. To find the successor, we need to check if the node has right child. If yes, simply return the minimum node of the right subtree (consider 9's successor in <a href="#img-bst">Fig. 1</a>). If no, we need to go upwards until reaching a node that is at the left child position (consider 6's successor in <a href="#img-bst">Fig. 1</a>) then return its parent. Finding the predecessor has almost the same (left-right flipped) procedure.   
+</p>
+<h3 id='section-bst-walk-cpp'>bst-query.cpp</h3>
+<div class="code-block" id="user-src-2"></div>
+<div class="output-block" id="output-2"></div>
+<h2 id="section-insert-delete">Insert/Delete</h2>
+<p>
+The procedure of inserting a node is straightforward, similiar to searching a value, can be implemented both recursively and iteratively. The only trick here is to update the root of the tree if the tree to insert is empty. Deleting a node is more difficult compared to inserting in terms of cases to consider. Assume we have the reference to the node to be deleted (n):
+<ol>
+	<li>
+		n has no child. Simply remove n and update its parent.
+	</li>
+	<li>
+		n has one child. Simply move its child upwards to replace it.
+	</li>
+	<li>
+		n has two children. In this case, we need to find either its predecessor or successor to replace its position. Here, we choose predecessor on the left subtree. Again, there are two cases to consider here. If the predecessor (prev) is its immediate left child, since this also requires that prev does not have right child, simply move the left subtree upwards to replace its position. Otherwise, if prev is not its immediate left child, we will first elevate prev's left subtree to replace prev's position and then set the value of node n to prev's value. <a href="#img-deletion">Fig. 3</a>, 
+	</li>
+</ol>
+
+Although deletion involves more considerations, it does not affect its running time. Both insertion and deletion run in \(O(h)\)).
+</p>
+{% endblock %}
+{% block articlejs %}
+<script src="{% static "blog/js/bst.js" %}"></script>
+<link href="{% static "blog/css/bst.css" %}" rel="stylesheet">
+{% endblock %}

@@ -65,6 +65,7 @@ $(function(){
 		$('#btn-star-count div').html(stars);
 	});
 	$("p.note").prepend("<strong>Note: </strong>");
+
 	var tags=$("h2,h3");
 	var sidebar='<nav class="bs-docs-sidebar hidden-sm hidden-xs">';
 	sidebar+='<ul class="nav nav-stacked" data-spy="affix" data-offset-top="175" id="nav-sidebar">';
